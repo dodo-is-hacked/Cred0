@@ -21,16 +21,16 @@
 
 :root[data-theme="dark"] {
   /* Modern High-Contrast Slate/Charcoal Palette */
-  --bg: #0F172A;              /* Dark Slate Blue Base */
-  --surface: #1E293B;         /* Slate Card Surface */
-  --surface-raised: #334155;  /* Hover / Accent Card Surface */
-  --border: #334155;          /* Crisp Border Tint */
-  --text-primary: #F8FAFC;    /* High-contrast Crisp White */
-  --text-secondary: #94A3B8;  /* Muted Slate Text */
-  --accent-primary: #3B82F6;  /* Vibrant Blue CTA */
-  --accent-soft: #1E3A8A;     /* Deep Soft Blue Tint */
-  --success: #22C55E;         /* Clear Emerald Green */
-  --danger: #EF4444;          /* Soft Red */
+--bg: #111112;              /* Near-Black Base */
+--surface: #17181a;         /* Neutral Dark Card Surface */
+--surface-raised: #26272a;  /* Hover / Accent Card Surface */
+--border: #3f4045;          /* Neutral Border */
+--text-primary: #F8FAFC;    /* High-contrast Crisp White */
+--text-secondary: #94A3B8;  /* Muted Slate Text */
+--accent-primary: #6591d8;  /* Vibrant Blue CTA */
+--accent-soft: #0d0f14;     /* Deep Neutral-Blue Tint */
+--success: #22C55E;         /* Clear Emerald Green */
+--danger: #EF4444;          /* Soft Red */
 }
 
 body {

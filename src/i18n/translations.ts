@@ -25,7 +25,6 @@ export const translations: Record<Language, Record<string, string>> = {
     enter_otp: 'Enter 4-Digit OTP',
     otp_hint: 'Demo code pre-filled as 1234. Auto-verifying...',
     verify_otp: 'Verify & Continue',
-    bias_banner: 'Inclusivity Guarantee: We NEVER collect gender, caste, or religion data.',
 
     // Borrower Steps
     step_0: 'Phone Verification',
@@ -184,10 +183,7 @@ export const translations: Record<Language, Record<string, string>> = {
     mobile_label: '10 अंकों का मोबाइल नंबर',
     mobile_placeholder: '98765 43210',
     get_otp: 'ओटीपी कोड प्राप्त करें',
-    enter_otp: '4-अंकीय ओटीपी दर्ज करें',
-    otp_hint: 'डेमो कोड 1234 पहले से भरा है। सत्यापित हो रहा है...',
     verify_otp: 'सत्यापित करें और आगे बढ़ें',
-    bias_banner: 'निष्पक्षता गारंटी: हम कभी भी लिंग, जाति या धर्म का डेटा एकत्र नहीं करते हैं।',
 
     // Borrower Steps
     step_0: 'फ़ोन सत्यापन',
@@ -346,10 +342,7 @@ export const translations: Record<Language, Record<string, string>> = {
     mobile_label: '১০-ডিজিটের মোবাইল নম্বর',
     mobile_placeholder: '৯৮৭৬৫ ৪৩২১০',
     get_otp: 'ওটিপি কোড পান',
-    enter_otp: '৪-ডিজিটের ওটিপি লিখুন',
-    otp_hint: 'ডেমো কোড ১২৩৪ আগে থেকেই পূরণ করা আছে। যাচাই হচ্ছে...',
     verify_otp: 'যাচাই করুন এবং এগিয়ে যান',
-    bias_banner: 'নিরপেক্ষতার নিশ্চয়তা: আমরা কখনোই লিঙ্গ, জাতি বা ধর্মের তথ্য সংগ্রহ করি না।',
 
     // Borrower Steps
     step_0: 'ফোন যাচাইকরণ',

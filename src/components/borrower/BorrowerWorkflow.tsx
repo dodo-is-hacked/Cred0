@@ -332,14 +332,6 @@ export const BorrowerWorkflow: React.FC<BorrowerWorkflowProps> = ({
                 </button>
               </div>
             )}
-
-            {/* Bias prevention banner */}
-            <div className="rounded-xl border border-theme-border bg-theme-soft/50 p-3.5 text-center">
-              <p className="text-xs font-bold text-theme-accent flex items-center justify-center gap-1.5">
-                <ShieldAlert className="w-4 h-4 shrink-0" />
-                {t.bias_banner}
-              </p>
-            </div>
           </div>
         </div>
       )}
