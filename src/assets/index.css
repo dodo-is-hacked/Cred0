@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: 'Lora', Georgia, serif;
+  --font-sans: 'Manrope', system-ui, -apple-system, sans-serif;
+}
+
+:root, :root[data-theme="light"] {
+  /* "Frozen Lake" Palette */
+  --bg: #F8FAFC;
+  --surface: #FFFFFF;
+  --surface-raised: #F1F5F9;
+  --border: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;   /* Slate */
+  --accent-primary: #1E40AF;   /* Navy/Blue CTAs */
+  --accent-soft: #DBEAFE;      /* Soft Blue Tint */
+  --success: #16A34A;
+  --danger: #DC2626;
+}
+
+:root[data-theme="dark"] {
+  /* Modern High-Contrast Slate/Charcoal Palette */
+  --bg: #0F172A;              /* Dark Slate Blue Base */
+  --surface: #1E293B;         /* Slate Card Surface */
+  --surface-raised: #334155;  /* Hover / Accent Card Surface */
+  --border: #334155;          /* Crisp Border Tint */
+  --text-primary: #F8FAFC;    /* High-contrast Crisp White */
+  --text-secondary: #94A3B8;  /* Muted Slate Text */
+  --accent-primary: #3B82F6;  /* Vibrant Blue CTA */
+  --accent-soft: #1E3A8A;     /* Deep Soft Blue Tint */
+  --success: #22C55E;         /* Clear Emerald Green */
+  --danger: #EF4444;          /* Soft Red */
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Manrope', sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  transition: background-color 200ms ease-out, color 200ms ease-out;
+  font-size: 16px;
+}
+
+/* Custom theme helper classes */
+.bg-theme-bg { background-color: var(--bg); }
+.bg-theme-surface { background-color: var(--surface); }
+.bg-theme-surface-raised { background-color: var(--surface-raised); }
+.border-theme-border { border-color: var(--border); }
+.text-theme-primary { color: var(--text-primary); }
+.text-theme-secondary { color: var(--text-secondary); }
+.bg-theme-accent { background-color: var(--accent-primary); }
+.text-theme-accent { color: var(--accent-primary); }
+.bg-theme-soft { background-color: var(--accent-soft); }
+.text-theme-success { color: var(--success); }
+.text-theme-danger { color: var(--danger); }
+
+.font-serif-lora { font-family: 'Lora', Georgia, serif; }
+.font-sans-manrope { font-family: 'Manrope', sans-serif; }
+
+/* Custom ink-stamp styling for Trust Score reveal */
+.ink-stamp-frame {
+  border: 3px double var(--accent-primary);
+  border-radius: 16px;
+  background-color: var(--surface);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 128, 0.12);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}

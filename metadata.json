@@ -1,0 +1,6 @@
+{
+  "name": "TRUST",
+  "description": "Trust-first micro-credit scoring and underwriting platform for informal economy borrowers",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
