@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
 import { useBorrowerFormContext } from '../../context/BorrowerFormContext';
@@ -6,14 +6,7 @@ import { StepTracker } from '../../components/borrower/StepTracker';
 import { translations } from '../../i18n/translations';
 import { auth } from '../../config/firebase';
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
-import { Smartphone, ArrowRight, ShieldAlert, Loader2, AlertCircle } from 'lucide-react';
-
-// TypeScript declaration to bind recaptchaVerifier to window
-declare global {
-  interface Window {
-    recaptchaVerifier: RecaptchaVerifier;
-  }
-}
+import { Smartphone, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
 
 export const AuthPage: React.FC = () => {
   const { language, role } = useAppContext();
@@ -35,23 +28,37 @@ export const AuthPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
 
-  // 1. Initialize invisible reCAPTCHA on component mount
-  useEffect(() => {
-    if (!window.recaptchaVerifier) {
-      try {
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-          size: 'invisible',
-          callback: () => {
-            // reCAPTCHA solved automatically
-          },
-          'expired-callback': () => {
-            setErrorMessage('reCAPTCHA expired. Please try sending OTP again.');
-          }
-        });
-      } catch (err) {
-        console.error('reCAPTCHA initialization error:', err);
-      }
+  // Use a React Ref instead of `window` object to manage lifecycle properly
+  const recaptchaVerifierRef = useRef<RecaptchaVerifier | null>(null);
+
+  // Helper to initialize or get the existing reCAPTCHA instance
+  const getRecaptchaVerifier = () => {
+    if (!recaptchaVerifierRef.current) {
+      recaptchaVerifierRef.current = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        size: 'invisible',
+        callback: () => {
+          // reCAPTCHA solved automatically
+        },
+        'expired-callback': () => {
+          setErrorMessage('reCAPTCHA expired. Please try sending OTP again.');
+        }
+      });
     }
+    return recaptchaVerifierRef.current;
+  };
+
+  // Cleanup reCAPTCHA on unmount
+  useEffect(() => {
+    return () => {
+      if (recaptchaVerifierRef.current) {
+        try {
+          recaptchaVerifierRef.current.clear();
+        } catch (e) {
+          console.warn('Failed to clear recaptcha instance:', e);
+        }
+        recaptchaVerifierRef.current = null;
+      }
+    };
   }, []);
 
   // 2. Request SMS OTP via Firebase
@@ -67,7 +74,7 @@ export const AuthPage: React.FC = () => {
 
     try {
       const formattedPhone = `+91${cleanPhone.slice(-10)}`;
-      const appVerifier = window.recaptchaVerifier;
+      const appVerifier = getRecaptchaVerifier();
 
       const result = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
       setConfirmationResult(result);
@@ -77,15 +84,20 @@ export const AuthPage: React.FC = () => {
       console.error('Firebase SMS error:', error);
       setLoading(false);
       
-      // Reset reCAPTCHA widget if an error occurs
-      if (window.recaptchaVerifier) {
-        window.recaptchaVerifier.render().then((widgetId) => {
-          // @ts-ignore
-          if (window.grecaptcha) window.grecaptcha.reset(widgetId);
-        });
+      // Clear current verifier on failure so next attempt gets a fresh instance
+      if (recaptchaVerifierRef.current) {
+        try {
+          recaptchaVerifierRef.current.clear();
+        } catch (e) {}
+        recaptchaVerifierRef.current = null;
       }
 
-      if (error.code === 'auth/invalid-phone-number') {
+      // Handle common Firebase phone auth errors clearly
+      if (error.code === 'auth/billing-not-enabled') {
+        setErrorMessage(
+          'Firebase SMS requires the Blaze Plan. Configure Test Phone Numbers in Firebase Console for free testing.'
+        );
+      } else if (error.code === 'auth/invalid-phone-number') {
         setErrorMessage('Invalid phone number format.');
       } else if (error.code === 'auth/too-many-requests') {
         setErrorMessage('Too many attempts. Please try again later.');
@@ -111,7 +123,6 @@ export const AuthPage: React.FC = () => {
     setLoading(true);
 
     try {
-      // Confirm OTP code with Firebase Auth
       await confirmationResult.confirm(otp.trim());
       
       setLoading(false);
@@ -132,7 +143,10 @@ export const AuthPage: React.FC = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-6 sm:px-6">
-      {/* Container required for Firebase Invisible reCAPTCHA */}
+      {/* 
+        CRITICAL: This div must stay outside conditional rendering logic 
+        so React never detaches it from the DOM.
+      */}
       <div id="recaptcha-container"></div>
 
       {role === 'borrower' && <StepTracker currentStep={0} />}
@@ -161,7 +175,7 @@ export const AuthPage: React.FC = () => {
 
           <div>
             <label className="block text-xs font-bold uppercase text-theme-secondary mb-1.5">
-              {t.mobile_label}
+              {t.mobile_label || '10-DIGIT MOBILE NUMBER'}
             </label>
             <div className="flex h-[52px] rounded-xl border border-theme-border bg-theme-bg overflow-hidden focus-within:border-theme-accent">
               <span className="flex items-center px-4 bg-theme-surface border-r border-theme-border text-sm font-bold text-theme-secondary">
