@@ -4,10 +4,11 @@ import { useAppContext } from '../../context/AppContext';
 import { useBorrowerFormContext } from '../../context/BorrowerFormContext';
 import { StepTracker } from '../../components/borrower/StepTracker';
 import { DocumentUpload } from '../../components/borrower/DocumentUpload';
+import { UpiUploadCard } from '../../components/borrower/UpiUploadCard';
 
 export const DocumentPage: React.FC = () => {
   const { language, currentBorrower } = useAppContext();
-  const { handleVerifyDoc } = useBorrowerFormContext();
+  const { handleVerifyDoc, upiTransactionCount, handleUpdateUpiCount } = useBorrowerFormContext();
 
   const navigate = useNavigate();
 
@@ -28,6 +29,14 @@ export const DocumentPage: React.FC = () => {
         onSkip={handleSkipOrContinue}
         verified={currentBorrower?.documentVerified || false}
         docName={currentBorrower?.documentName}
+      />
+
+      <UpiUploadCard
+        language={language}
+        initialCount={upiTransactionCount}
+        onCountChange={(count) => {
+          handleUpdateUpiCount(count);
+        }}
       />
     </div>
   );

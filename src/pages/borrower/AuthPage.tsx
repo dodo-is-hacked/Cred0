@@ -16,7 +16,7 @@ declare global {
 }
 
 export const AuthPage: React.FC = () => {
-  const { language } = useAppContext();
+  const { language, role } = useAppContext();
   const {
     phone,
     setPhone,
@@ -117,7 +117,12 @@ export const AuthPage: React.FC = () => {
       setLoading(false);
       setOtpVerified(true);
       await saveCurrentStep();
-      navigate('/borrower/basic');
+
+      if (role === 'lender') {
+        navigate('/lender');
+      } else {
+        navigate('/borrower/basic');
+      }
     } catch (error: any) {
       console.error('Firebase OTP Verification error:', error);
       setLoading(false);
@@ -130,7 +135,7 @@ export const AuthPage: React.FC = () => {
       {/* Container required for Firebase Invisible reCAPTCHA */}
       <div id="recaptcha-container"></div>
 
-      <StepTracker currentStep={0} />
+      {role === 'borrower' && <StepTracker currentStep={0} />}
 
       <div className="space-y-6 rounded-2xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-xs">
         <div className="text-center max-w-md mx-auto space-y-2">
@@ -138,10 +143,10 @@ export const AuthPage: React.FC = () => {
             <Smartphone className="h-7 w-7" />
           </div>
           <h2 className="font-serif-lora text-2xl sm:text-3xl font-bold text-theme-primary">
-            {t.auth_title}
+            {role === 'lender' ? (t.role_lender_cta || 'Lender Login') : (t.auth_title || 'Welcome to TRUST')}
           </h2>
           <p className="text-xs sm:text-sm text-theme-secondary leading-relaxed">
-            {t.auth_subtitle}
+            {role === 'lender' ? (t.auth_subtitle_lender || 'Enter your authorized mobile number to access the Lender Underwriting Portal') : (t.auth_subtitle || 'Build your fair credit score without traditional bank records')}
           </p>
         </div>
 

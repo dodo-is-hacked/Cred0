@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { LoanApplication, Language, LenderProfile } from '../../types';
 import { translations } from '../../i18n/translations';
 import { formatIndianCurrency, calculateEmi } from '../../utils/formatters';
+import { useAppContext } from '../../context/AppContext';
 import {
   X,
   Building2,
@@ -39,9 +40,10 @@ export const AuditPanelModal: React.FC<AuditPanelModalProps> = ({
 }) => {
   const t = translations[language] || translations.en;
   const { borrowerProfile, scoreResult } = application;
+  const { currentLender } = useAppContext();
 
-  // Selected Lender
-  const [selectedLenderId, setSelectedLenderId] = useState<string>(lenders[0]?.id || 'len_gramin');
+  // Active Lender from Context or Fallback
+  const activeLender = currentLender || lenders[0] || { id: 'len_gramin', name: 'GraminTrust NBFC' };
 
   // Underwriting Control States
   const [loanAmount, setLoanAmount] = useState<number>(
@@ -60,13 +62,11 @@ export const AuditPanelModal: React.FC<AuditPanelModalProps> = ({
   // EMI Calculation
   const estimatedEmi = calculateEmi(loanAmount, interestRate, tenureMonths);
 
-  const selectedLender = lenders.find(l => l.id === selectedLenderId) || lenders[0];
-
   const handleConfirmApprove = async () => {
     setIsSubmitting(true);
     await onApproveLoan(application.id, {
-      lenderId: selectedLender.id,
-      lenderName: selectedLender.name,
+      lenderId: activeLender.id,
+      lenderName: activeLender.name,
       amount: loanAmount,
       interestRatePct: interestRate,
       tenureMonths,
@@ -197,20 +197,10 @@ export const AuditPanelModal: React.FC<AuditPanelModalProps> = ({
               {t.underwriting_title}
             </h3>
 
-            {/* Select Lender Entity */}
-            <div className="flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-theme-secondary" />
-              <select
-                value={selectedLenderId}
-                onChange={(e) => setSelectedLenderId(e.target.value)}
-                className="rounded-lg border border-theme-border bg-theme-bg px-2.5 py-1 text-xs font-bold text-theme-primary focus:outline-none"
-              >
-                {lenders.map((l) => (
-                  <option key={l.id} value={l.id}>
-                    {l.name}
-                  </option>
-                ))}
-              </select>
+            {/* Active Lender Badge */}
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-theme-border bg-theme-soft text-xs font-bold text-theme-accent shadow-xs">
+              <Building2 className="w-4 h-4 text-theme-accent" />
+              <span>{activeLender.name}</span>
             </div>
           </div>
 

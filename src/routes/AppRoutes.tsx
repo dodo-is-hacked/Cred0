@@ -3,6 +3,9 @@ import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { LayoutShell } from '../components/common/LayoutShell';
 import { BorrowerFormProvider } from '../context/BorrowerFormContext';
 
+// Onboarding Gate Page
+import { OnboardingGatePage } from '../pages/OnboardingGatePage';
+
 // Borrower Pages
 import { AuthPage } from '../pages/borrower/AuthPage';
 import { BasicDataPage } from '../pages/borrower/BasicDataPage';
@@ -28,10 +31,10 @@ const BorrowerFormWrapper: React.FC = () => (
 export const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route element={<LayoutShell />}>
-        {/* Default Route */}
-        <Route path="/" element={<Navigate to="/borrower/auth" replace />} />
+      {/* Welcome & Role Selection Gate (Outside LayoutShell) */}
+      <Route path="/" element={<OnboardingGatePage />} />
 
+      <Route element={<LayoutShell />}>
         {/* Borrower Onboarding Flow Routes */}
         <Route element={<BorrowerFormWrapper />}>
           <Route path="/borrower/auth" element={<AuthPage />} />

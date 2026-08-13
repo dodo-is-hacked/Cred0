@@ -8,6 +8,10 @@ export type Education = 'none' | 'primary' | 'secondary' | 'graduate';
 export type Asset = 'land' | 'livestock' | 'vehicle' | 'shop_cart' | 'pucca_house';
 export type GroupType = 'shg' | 'cooperative' | 'fpo' | 'union';
 
+export type Gender = 'male' | 'female' | 'other';
+export type MaritalStatus = 'single' | 'married' | 'widowed' | 'divorced';
+export type SchoolType = 'government' | 'private' | 'not_in_school';
+
 export type ScoreZone = 'Building' | 'Fair' | 'Good' | 'Trusted';
 export type RiskCategory = 'Low' | 'Moderate' | 'High';
 
@@ -19,6 +23,13 @@ export interface BorrowerProfile {
   occupation: Occupation;
   age: number;
   education: Education;
+  gender?: Gender;
+  maritalStatus?: MaritalStatus;
+  hasChildren?: boolean;
+  childrenSchoolType?: SchoolType;
+  headOfHouseholdGender?: Gender;
+  longTermIllness?: boolean;
+  upiTransactionCount?: number;
   householdSize: number;
   earningMembers: number;
   assets: Asset[];

@@ -5,7 +5,10 @@ import {
   Education,
   Asset,
   GroupType,
-  Offer
+  Offer,
+  Gender,
+  MaritalStatus,
+  SchoolType
 } from '../types/types';
 import { useAppContext } from './AppContext';
 import { api } from '../services/api';
@@ -19,6 +22,23 @@ interface BorrowerFormContextType {
   setOtpSent: (val: boolean) => void;
   otpVerified: boolean;
   setOtpVerified: (val: boolean) => void;
+  name: string;
+  setName: (val: string) => void;
+  gender: Gender;
+  setGender: (val: Gender) => void;
+  maritalStatus: MaritalStatus;
+  setMaritalStatus: (val: MaritalStatus) => void;
+  hasChildren: boolean;
+  setHasChildren: (val: boolean) => void;
+  childrenSchoolType?: SchoolType;
+  setChildrenSchoolType: (val: SchoolType | undefined) => void;
+  headOfHouseholdGender: Gender;
+  setHeadOfHouseholdGender: (val: Gender) => void;
+  longTermIllness: boolean;
+  setLongTermIllness: (val: boolean) => void;
+  upiTransactionCount: number;
+  setUpiTransactionCount: (val: number) => void;
+  handleUpdateUpiCount: (count: number) => Promise<void>;
   occupation: Occupation;
   setOccupation: (val: Occupation) => void;
   age: number;
@@ -57,6 +77,15 @@ export const BorrowerFormProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
 
+  const [name, setName] = useState<string>(currentBorrower?.name || '');
+  const [gender, setGender] = useState<Gender>(currentBorrower?.gender || 'female');
+  const [maritalStatus, setMaritalStatus] = useState<MaritalStatus>(currentBorrower?.maritalStatus || 'married');
+  const [hasChildren, setHasChildren] = useState<boolean>(currentBorrower?.hasChildren ?? true);
+  const [childrenSchoolType, setChildrenSchoolType] = useState<SchoolType | undefined>(currentBorrower?.childrenSchoolType || 'government');
+  const [headOfHouseholdGender, setHeadOfHouseholdGender] = useState<Gender>(currentBorrower?.headOfHouseholdGender || 'female');
+  const [longTermIllness, setLongTermIllness] = useState<boolean>(currentBorrower?.longTermIllness ?? false);
+  const [upiTransactionCount, setUpiTransactionCount] = useState<number>(currentBorrower?.upiTransactionCount || 0);
+
   const [occupation, setOccupation] = useState<Occupation>(currentBorrower?.occupation || 'street_vendor');
   const [age, setAge] = useState<number>(currentBorrower?.age || 38);
   const [education, setEducation] = useState<Education>(currentBorrower?.education || 'primary');
@@ -78,6 +107,15 @@ export const BorrowerFormProvider: React.FC<{ children: React.ReactNode }> = ({ 
   useEffect(() => {
     if (currentBorrower) {
       setPhone(currentBorrower.phone || '');
+      setName(currentBorrower.name || '');
+      setGender(currentBorrower.gender || 'female');
+      setMaritalStatus(currentBorrower.maritalStatus || 'married');
+      setHasChildren(currentBorrower.hasChildren ?? true);
+      setChildrenSchoolType(currentBorrower.childrenSchoolType || 'government');
+      setHeadOfHouseholdGender(currentBorrower.headOfHouseholdGender || 'female');
+      setLongTermIllness(currentBorrower.longTermIllness ?? false);
+      setUpiTransactionCount(currentBorrower.upiTransactionCount || 0);
+
       setOccupation(currentBorrower.occupation);
       setAge(currentBorrower.age);
       setEducation(currentBorrower.education);
@@ -103,7 +141,15 @@ export const BorrowerFormProvider: React.FC<{ children: React.ReactNode }> = ({ 
     if (!currentBorrower) return;
     const updatedProfile: BorrowerProfile = {
       ...currentBorrower,
+      name,
       phone,
+      gender,
+      maritalStatus,
+      hasChildren,
+      childrenSchoolType: hasChildren ? childrenSchoolType : undefined,
+      headOfHouseholdGender,
+      longTermIllness,
+      upiTransactionCount,
       occupation,
       age,
       education,
@@ -116,6 +162,16 @@ export const BorrowerFormProvider: React.FC<{ children: React.ReactNode }> = ({ 
       }
     };
 
+    await handleUpdateBorrower(updatedProfile);
+  };
+
+  const handleUpdateUpiCount = async (count: number) => {
+    setUpiTransactionCount(count);
+    if (!currentBorrower) return;
+    const updatedProfile: BorrowerProfile = {
+      ...currentBorrower,
+      upiTransactionCount: count
+    };
     await handleUpdateBorrower(updatedProfile);
   };
 
@@ -202,6 +258,23 @@ export const BorrowerFormProvider: React.FC<{ children: React.ReactNode }> = ({ 
         setOtpSent,
         otpVerified,
         setOtpVerified,
+        name,
+        setName,
+        gender,
+        setGender,
+        maritalStatus,
+        setMaritalStatus,
+        hasChildren,
+        setHasChildren,
+        childrenSchoolType,
+        setChildrenSchoolType,
+        headOfHouseholdGender,
+        setHeadOfHouseholdGender,
+        longTermIllness,
+        setLongTermIllness,
+        upiTransactionCount,
+        setUpiTransactionCount,
+        handleUpdateUpiCount,
         occupation,
         setOccupation,
         age,

@@ -6,9 +6,11 @@ import {
   ScoreResult,
   ScoringMode,
   Theme,
-  LoanApplication
+  LoanApplication,
+  LenderProfile
 } from '../types/types';
 import { api } from '../services/api';
+import { SEED_LENDERS } from '../data/seedData';
 
 interface AppContextType {
   language: Language;
@@ -21,6 +23,9 @@ interface AppContextType {
   setScoringMode: (mode: ScoringMode) => void;
   borrowers: BorrowerProfile[];
   currentBorrower: BorrowerProfile | null;
+  lenders: LenderProfile[];
+  currentLender: LenderProfile | null;
+  handleSelectLender: (lender: LenderProfile) => void;
   scoreResult: ScoreResult | null;
   applications: LoanApplication[];
   selectedAuditApp: LoanApplication | null;
@@ -79,6 +84,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [borrowers, setBorrowers] = useState<BorrowerProfile[]>([]);
   const [currentBorrower, setCurrentBorrower] = useState<BorrowerProfile | null>(null);
+  const [lenders] = useState<LenderProfile[]>(SEED_LENDERS);
+  const [currentLender, setCurrentLender] = useState<LenderProfile | null>(SEED_LENDERS[0] || null);
+
+  const handleSelectLender = (lender: LenderProfile) => {
+    setCurrentLender(lender);
+  };
+
   const [scoreResult, setScoreResult] = useState<ScoreResult | null>(null);
   const [applications, setApplications] = useState<LoanApplication[]>([]);
   const [selectedAuditApp, setSelectedAuditApp] = useState<LoanApplication | null>(null);
@@ -188,6 +200,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setScoringMode,
         borrowers,
         currentBorrower,
+        lenders,
+        currentLender,
+        handleSelectLender,
         scoreResult,
         applications,
         selectedAuditApp,

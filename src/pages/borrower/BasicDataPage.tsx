@@ -10,6 +10,12 @@ import { Store, Truck, Sprout, Briefcase, Plus, Minus, ArrowRight } from 'lucide
 export const BasicDataPage: React.FC = () => {
   const { language } = useAppContext();
   const {
+    name,
+    setName,
+    gender,
+    setGender,
+    maritalStatus,
+    setMaritalStatus,
     occupation,
     setOccupation,
     age,
@@ -36,6 +42,56 @@ export const BasicDataPage: React.FC = () => {
       <StepTracker currentStep={1} />
 
       <div className="space-y-6 rounded-2xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-xs">
+        {/* Borrower Demographics: Name, Gender, Marital Status */}
+        <div className="grid gap-4 sm:grid-cols-3">
+          {/* Full Name */}
+          <div className="space-y-1.5 rounded-2xl border border-theme-border bg-theme-bg p-4">
+            <label className="block text-xs font-bold uppercase text-theme-secondary">
+              {t.name_label || 'Full Name'}
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder={t.name_placeholder || 'e.g. Anjali Sharma'}
+              className="w-full h-[46px] rounded-xl border border-theme-border bg-theme-surface px-3.5 text-sm font-bold text-theme-primary focus:border-theme-accent focus:outline-none"
+            />
+          </div>
+
+          {/* Gender Select */}
+          <div className="space-y-1.5 rounded-2xl border border-theme-border bg-theme-bg p-4">
+            <label className="block text-xs font-bold uppercase text-theme-secondary">
+              {t.gender_label || 'Gender'}
+            </label>
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value as any)}
+              className="w-full h-[46px] rounded-xl border border-theme-border bg-theme-surface px-3 text-sm font-bold text-theme-primary focus:border-theme-accent focus:outline-none"
+            >
+              <option value="female">{t.gender_female}</option>
+              <option value="male">{t.gender_male}</option>
+              <option value="other">{t.gender_other}</option>
+            </select>
+          </div>
+
+          {/* Marital Status Select */}
+          <div className="space-y-1.5 rounded-2xl border border-theme-border bg-theme-bg p-4">
+            <label className="block text-xs font-bold uppercase text-theme-secondary">
+              {t.marital_status_label || 'Marital Status'}
+            </label>
+            <select
+              value={maritalStatus}
+              onChange={(e) => setMaritalStatus(e.target.value as any)}
+              className="w-full h-[46px] rounded-xl border border-theme-border bg-theme-surface px-3 text-sm font-bold text-theme-primary focus:border-theme-accent focus:outline-none"
+            >
+              <option value="married">{t.marital_married}</option>
+              <option value="single">{t.marital_single}</option>
+              <option value="widowed">{t.marital_widowed}</option>
+              <option value="divorced">{t.marital_divorced}</option>
+            </select>
+          </div>
+        </div>
+
         <div>
           <h2 className="font-serif-lora text-2xl sm:text-3xl font-bold text-theme-primary">
             {t.occupation_title}

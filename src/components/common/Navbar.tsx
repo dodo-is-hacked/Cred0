@@ -16,7 +16,10 @@ export const Navbar: React.FC = () => {
     currentBorrower,
     borrowers,
     handleSelectBorrower,
-    handleNewBorrower
+    handleNewBorrower,
+    lenders,
+    currentLender,
+    handleSelectLender
   } = useAppContext();
 
   const navigate = useNavigate();
@@ -61,8 +64,8 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Center: Quick Demo Borrower Selector */}
-        {currentBorrower && (
+        {/* Center: Quick Demo Profile Selectors */}
+        {role === 'borrower' && currentBorrower && (
           <div className="flex items-center gap-2">
             <div className="relative group">
               <button className="flex items-center gap-2 rounded-xl border border-theme-border bg-theme-bg px-3.5 py-2 text-xs sm:text-sm font-semibold text-theme-primary hover:border-theme-accent">
@@ -71,11 +74,6 @@ export const Navbar: React.FC = () => {
                 <ChevronDown className="h-3.5 w-3.5 text-theme-secondary" />
               </button>
 
-              {/* Fixed Dropdown Wrapper:
-                  - Positioned directly at top-full
-                  - Added pt-1 container so hover target remains contiguous
-                  - Added hover:block alongside group-hover:block
-              */}
               <div className="absolute left-0 top-full hidden w-60 pt-1 group-hover:block hover:block z-50">
                 <div className="rounded-2xl border border-theme-border bg-theme-surface p-1.5 shadow-xl">
                   <div className="px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-wider text-theme-secondary">
@@ -109,6 +107,40 @@ export const Navbar: React.FC = () => {
                       + New Borrower Flow
                     </button>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {role === 'lender' && currentLender && (
+          <div className="flex items-center gap-2">
+            <div className="relative group">
+              <button className="flex items-center gap-2 rounded-xl border border-theme-border bg-theme-bg px-3.5 py-2 text-xs sm:text-sm font-semibold text-theme-primary hover:border-theme-accent">
+                <Building2 className="h-4 w-4 text-theme-accent" />
+                <span className="max-w-[160px] truncate">{currentLender.name}</span>
+                <ChevronDown className="h-3.5 w-3.5 text-theme-secondary" />
+              </button>
+
+              <div className="absolute left-0 top-full hidden w-64 pt-1 group-hover:block hover:block z-50">
+                <div className="rounded-2xl border border-theme-border bg-theme-surface p-1.5 shadow-xl">
+                  <div className="px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-wider text-theme-secondary">
+                    {t.switch_lender}
+                  </div>
+                  {lenders.map((l) => (
+                    <button
+                      key={l.id}
+                      onClick={() => handleSelectLender(l)}
+                      className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs sm:text-sm text-left font-medium ${
+                        l.id === currentLender.id
+                          ? 'bg-theme-soft font-bold text-theme-accent'
+                          : 'text-theme-primary hover:bg-theme-bg'
+                      }`}
+                    >
+                      <span className="truncate">{l.name}</span>
+                      <span className="text-[10px] text-theme-secondary capitalize">({l.type})</span>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
