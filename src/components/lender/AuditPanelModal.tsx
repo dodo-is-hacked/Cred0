@@ -43,7 +43,7 @@ export const AuditPanelModal: React.FC<AuditPanelModalProps> = ({
   const { currentLender } = useAppContext();
 
   // Active Lender from Context or Fallback
-  const activeLender = currentLender || lenders[0] || { id: 'len_gramin', name: 'GraminTrust NBFC' };
+  const activeLender = currentLender || lenders[0] || { id: 'len_gramin', name: 'GraminCred0 NBFC' };
 
   // Underwriting Control States
   const [loanAmount, setLoanAmount] = useState<number>(
@@ -119,7 +119,7 @@ export const AuditPanelModal: React.FC<AuditPanelModalProps> = ({
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="text-lg font-bold text-theme-primary">{borrowerProfile.name}</h3>
-                <p className="text-xs text-theme-secondary">{borrowerProfile.location} · Age {borrowerProfile.age}</p>
+                <p className="text-xs text-theme-secondary">Age {borrowerProfile.age}</p>
               </div>
               <span className="px-2.5 py-1 rounded-full text-xs font-extrabold bg-theme-soft text-theme-accent border border-theme-border">
                 {scoreResult.zone}

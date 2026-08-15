@@ -3,26 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { translations } from '../i18n/translations';
 import { Role } from '../types/types';
-import { ShieldCheck, User, Building2, ArrowRight, CheckCircle2, Sparkles, Scale, Lock } from 'lucide-react';
+import { ShieldCheck, User, Building2, ArrowRight, Sparkles, Scale, Lock } from 'lucide-react';
 
 export const OnboardingGatePage: React.FC = () => {
-  const { language, setRole } = useAppContext();
+  const { language, role, setRole } = useAppContext();
   const navigate = useNavigate();
   const t = translations[language] || translations.en;
 
   const [step, setStep] = useState<'welcome' | 'role_select'>('welcome');
 
-  useEffect(() => {
-    const seen = sessionStorage.getItem('trust_onboarding_seen');
-    if (seen === 'true') {
-      navigate('/borrower/auth', { replace: true });
-    }
-  }, [navigate]);
-
   const handleSelectRole = (selectedRole: Role) => {
-    sessionStorage.setItem('trust_onboarding_seen', 'true');
+    sessionStorage.setItem('Cred0_onboarding_seen', 'true');
     setRole(selectedRole);
-    navigate('/borrower/auth');
+
+    // FIX: Route appropriately based on selected role
+    if (selectedRole === 'lender') {
+      navigate('/lender');
+    } else {
+      navigate('/borrower/basic');
+    }
   };
 
   return (
@@ -112,7 +111,7 @@ export const OnboardingGatePage: React.FC = () => {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 pt-2">
-              {/* Borrower Login Card */}
+              {/* Borrower Card */}
               <button
                 type="button"
                 onClick={() => handleSelectRole('borrower')}
@@ -136,7 +135,7 @@ export const OnboardingGatePage: React.FC = () => {
                 </div>
               </button>
 
-              {/* Lender Login Card */}
+              {/* Lender Card */}
               <button
                 type="button"
                 onClick={() => handleSelectRole('lender')}

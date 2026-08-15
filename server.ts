@@ -11,7 +11,7 @@ async function startServer() {
 
   // API Health Check
   app.get("/api/health", (req, res) => {
-    res.json({ status: "ok", name: "TRUST Micro-Credit Scoring API" });
+    res.json({ status: "ok", name: "Cred0 Micro-Credit Scoring API" });
   });
 
   // Auth Endpoints
@@ -43,7 +43,7 @@ app.post("/api/scoring/gemini", async (req, res) => {
     const ai = new GoogleGenAI({ apiKey });
 
     const prompt = `
-You are an underwriting AI for TRUST, an alternative micro-credit platform for informal economy borrowers.
+You are an underwriting AI for Cred0, an alternative micro-credit platform for informal economy borrowers.
 Analyze the following borrower profile and compute a credit score and breakdown:
 
 Borrower Profile:
@@ -61,7 +61,7 @@ Borrower Profile:
 Return ONLY a valid JSON object matching this structure (no markdown code blocks, no text before or after):
 {
   "score": <number between 300 and 900>,
-  "zone": "<Building | Fair | Good | Trusted>",
+  "zone": "<Building | Fair | Good | Cred0ed>",
   "defaultRiskPercent": <number default probability percentage, e.g. 7.5>,
   "riskCategory": "<Low | Moderate | High>",
   "aiInsight": "<2-sentence underwriting summary in language '${profile?.language || 'en'}'>",
@@ -122,7 +122,7 @@ Return ONLY a valid JSON object matching this structure (no markdown code blocks
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`TRUST Server listening on http://0.0.0.0:${PORT}`);
+    console.log(`Cred0 Server listening on http://0.0.0.0:${PORT}`);
   });
 }
 

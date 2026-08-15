@@ -7,15 +7,12 @@ import { BorrowerFormProvider } from '../context/BorrowerFormContext';
 import { OnboardingGatePage } from '../pages/OnboardingGatePage';
 
 // Borrower Pages
-import { AuthPage } from '../pages/borrower/AuthPage';
 import { BasicDataPage } from '../pages/borrower/BasicDataPage';
 import { HouseholdPage } from '../pages/borrower/HouseholdPage';
 import { AssetsPage } from '../pages/borrower/AssetsPage';
 import { CommunityPage } from '../pages/borrower/CommunityPage';
 import { DocumentPage } from '../pages/borrower/DocumentPage';
-import { ScoreRevealPage } from '../pages/borrower/ScoreRevealPage';
-import { OptimizationPage } from '../pages/borrower/OptimizationPage';
-import { MarketplaceSharePage } from '../pages/borrower/MarketplaceSharePage';
+import { BorrowerDashboardPage } from '../pages/borrower/BorrowerDashboardPage';
 
 // Lender Pages
 import { DashboardPage } from '../pages/lender/DashboardPage';
@@ -37,15 +34,12 @@ export const AppRoutes: React.FC = () => {
       <Route element={<LayoutShell />}>
         {/* Borrower Onboarding Flow Routes */}
         <Route element={<BorrowerFormWrapper />}>
-          <Route path="/borrower/auth" element={<AuthPage />} />
           <Route path="/borrower/basic" element={<BasicDataPage />} />
           <Route path="/borrower/household" element={<HouseholdPage />} />
           <Route path="/borrower/assets" element={<AssetsPage />} />
           <Route path="/borrower/community" element={<CommunityPage />} />
           <Route path="/borrower/document" element={<DocumentPage />} />
-          <Route path="/borrower/score" element={<ScoreRevealPage />} />
-          <Route path="/borrower/optimize" element={<OptimizationPage />} />
-          <Route path="/borrower/marketplace" element={<MarketplaceSharePage />} />
+          <Route path="/borrower/dashboard" element={<BorrowerDashboardPage />} />
         </Route>
 
         {/* Lender Routes */}
@@ -55,7 +49,7 @@ export const AppRoutes: React.FC = () => {
         <Route path="/lender/audit/:id" element={<AuditPage />} />
 
         {/* Fallback */}
-        <Route path="*" element={<Navigate to="/borrower/auth" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
   );

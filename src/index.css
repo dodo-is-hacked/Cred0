@@ -60,7 +60,7 @@ body {
 .font-serif-lora { font-family: 'Lora', Georgia, serif; }
 .font-sans-manrope { font-family: 'Manrope', sans-serif; }
 
-/* Custom ink-stamp styling for Trust Score reveal */
+/* Custom ink-stamp styling for Cred0 Score reveal */
 .ink-stamp-frame {
   border: 3px double var(--accent-primary);
   border-radius: 16px;

@@ -2,38 +2,25 @@ import { Language } from '../types';
 
 export const translations: Record<Language, Record<string, string>> = {
   en: {
-    brand_name: 'TRUST',
+    brand_name: 'Cred0',
     tagline: 'Alternative Credit Scoring for the Informal Economy',
-    tagline_hi: 'Bharosa — Trust in Every Micro-Loan',
-    tagline_bn: 'Bhorosha — Trust in Every Micro-Loan',
     
     // Roles & Navigation
     role_borrower: 'Borrower View',
     role_lender: 'Lender Audit View',
-    switch_profile: 'Switch Demo Borrower',
+    switch_profile: 'Switch Profile',
     scoring_mode: 'Scoring Engine',
     mode_mock: 'Deterministic Mock Engine',
     mode_local: 'Local Model API',
     mode_gemini: 'Gemini Hybrid AI Engine',
-    
-    // Auth & Onboarding
-    auth_title: 'Welcome to TRUST',
-    auth_subtitle: 'Build your fair credit score without traditional bank records',
-    mobile_label: '10-Digit Mobile Number',
-    mobile_placeholder: '98765 43210',
-    get_otp: 'Get Verification Code',
-    enter_otp: 'Enter 4-Digit OTP',
-    otp_hint: 'Demo code pre-filled as 1234. Auto-verifying...',
-    verify_otp: 'Verify & Continue',
 
     // Borrower Steps
-    step_0: 'Phone Verification',
     step_1: 'Basic Data',
     step_2: 'Household Profile',
     step_3: 'Asset Holdings',
     step_4: 'Community Ties',
     step_5: 'Document Verification',
-    step_6: 'Trust Score Reveal',
+    step_6: 'Cred0 Score Reveal',
     step_7: 'Score Optimization',
     step_8: 'Marketplace Submission',
 
@@ -79,7 +66,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Step 5: Document Upload
     doc_title: 'Document Upload (Optional)',
-    doc_subtitle: 'Uploading identity or utility records adds trust validation points',
+    doc_subtitle: 'Uploading identity or utility records adds Cred0 validation points',
     doc_dropzone: 'Drag & drop utility bills, land records, or trade licenses, or click to upload multiple files',
     doc_preset_title: 'Or pick sample documents to test multi-file upload:',
     doc_preset_1: 'Utility Electricity Bill (Muzaffarpur)',
@@ -89,13 +76,13 @@ export const translations: Record<Language, Record<string, string>> = {
     doc_verified: 'Documents Verified Successfully',
     doc_skip: 'Skip for now & view initial score',
 
-    // Step 6: Trust Score
-    score_reveal_title: 'Your TRUST Score',
+    // Step 6: Cred0 Score
+    score_reveal_title: 'Your Cred0 Score',
     score_scale_label: 'Scale: 300 to 900 Points',
     zone_building: 'Building',
     zone_fair: 'Fair',
     zone_good: 'Good',
-    zone_trusted: 'Trusted',
+    zone_Cred0ed: 'Cred0ed',
     why_this_score: 'Why This Score (Explainable Factors)',
     shap_positive: 'Positive Contributing Factors',
     shap_negative: 'Opportunities to Increase Score',
@@ -108,7 +95,7 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Step 8: Marketplace
     market_title: 'Share Profile with Lenders',
-    market_subtitle: 'Broadcast your verified profile to trustworthy micro-finance institutions and impact lenders',
+    market_subtitle: 'Broadcast your verified profile to Cred0worthy micro-finance institutions and impact lenders',
     share_cta: 'Send Request to Lenders',
     shared_success: 'Request Sent to Lenders!',
     shared_msg: 'Your application has been broadcast to all registered lenders.',
@@ -124,8 +111,8 @@ export const translations: Record<Language, Record<string, string>> = {
     filter_zone: 'Filter Zone',
     filter_occ: 'Filter Occupation',
     filter_all: 'All',
-    search_placeholder: 'Search borrower name or location...',
-    borrower_card_score: 'Trust Score',
+    search_placeholder: 'Search borrower name...',
+    borrower_card_score: 'Cred0 Score',
     borrower_card_risk: 'Risk Tier',
     audit_cta: 'Audit & Underwrite',
 
@@ -163,13 +150,13 @@ export const translations: Record<Language, Record<string, string>> = {
     loading: 'Processing...',
 
     // Welcome & Role Gate
-    welcome_title: 'Welcome to TRUST Credit Platform',
+    welcome_title: 'Welcome to Cred0 Credit Platform',
     welcome_body: 'An alternative, explainable credit-scoring engine empowering informal economy workers with transparent loan access, zero bias, and clear score optimization guidance.',
     welcome_cta: 'Get Started',
     role_select_title: 'Select Your Access Portal',
-    role_select_subtitle: 'Choose how you would like to interact with the TRUST credit system',
+    role_select_subtitle: 'Choose how you would like to interact with the Cred0 credit system',
     role_borrower_cta: 'Borrower Login',
-    role_borrower_desc: 'Build your alternative credit profile, unlock micro-credit offers, and optimize your financial trust score.',
+    role_borrower_desc: 'Build your alternative credit profile, unlock micro-credit offers, and optimize your financial Cred0 score.',
     role_lender_cta: 'Lender Login',
     role_lender_desc: 'Access applicant feeds, inspect SHAP feature attribution waterfalls, and sanction micro-loans with full auditability.',
     auth_subtitle_lender: 'Enter your authorized mobile number to access the Lender Underwriting Portal',
@@ -203,7 +190,7 @@ export const translations: Record<Language, Record<string, string>> = {
     upi_limit_notice: 'Maximum limit of 10 UPI screenshots reached. Extra files were skipped.',
   },
   hi: {
-    brand_name: 'TRUST',
+    brand_name: 'C',
     tagline: 'अनौपचारिक अर्थव्यवस्था के लिए निष्पक्ष क्रेडिट स्कोरिंग',
     tagline_hi: 'भरोसा — हर सूक्ष्म-ऋण में विश्वास',
     tagline_bn: 'भरोसा — हर सूक्ष्म-ऋण में विश्वास',
@@ -218,7 +205,7 @@ export const translations: Record<Language, Record<string, string>> = {
     mode_gemini: 'जेमिनी हाइब्रिड एआई इंजन',
     
     // Auth & Onboarding
-    auth_title: 'TRUST में आपका स्वागत है',
+    auth_title: 'Cred0 में आपका स्वागत है',
     auth_subtitle: 'बिना बैंक रिकॉर्ड के अपना निष्पक्ष क्रेडिट स्कोर बनाएं',
     mobile_label: '10 अंकों का मोबाइल नंबर',
     mobile_placeholder: '98765 43210',
@@ -288,13 +275,13 @@ export const translations: Record<Language, Record<string, string>> = {
     doc_verified: 'दस्तावेज़ सफलतापूर्वक सत्यापित',
     doc_skip: 'अभी छोड़ें और स्कोर देखें',
 
-    // Step 6: Trust Score
-    score_reveal_title: 'आपका TRUST स्कोर',
+    // Step 6: Cred0 Score
+    score_reveal_title: 'आपका Cred0 स्कोर',
     score_scale_label: 'पैमाना: 300 से 900 अंक',
     zone_building: 'निर्माण (Building)',
     zone_fair: 'सामान्य (Fair)',
     zone_good: 'उत्तम (Good)',
-    zone_trusted: 'विश्वसनीय (Trusted)',
+    zone_Cred0ed: 'विश्वसनीय (Cred0ed)',
     why_this_score: 'स्कोर का कारण (स्पष्टीकरण)',
     shap_positive: 'सकारात्मक योगदान कारक',
     shap_negative: 'स्कोर बढ़ाने के अवसर',
@@ -362,11 +349,11 @@ export const translations: Record<Language, Record<string, string>> = {
     loading: 'प्रक्रिया जारी है...',
 
     // Welcome & Role Gate
-    welcome_title: 'TRUST क्रेडिट प्लेटफॉर्म में आपका स्वागत है',
+    welcome_title: 'Cred0 क्रेडिट प्लेटफॉर्म में आपका स्वागत है',
     welcome_body: 'अनौपचारिक अर्थव्यवस्था के श्रमिकों के लिए एक पारदर्शी, व्याख्या योग्य क्रेडिट-स्कोरिंग इंजन जो बिना पक्षपात के ऋण पहुंच और स्पष्ट सुधार का अवसर प्रदान करता है।',
     welcome_cta: 'शुरू करें',
     role_select_title: 'अपना लॉगिन पोर्टल चुनें',
-    role_select_subtitle: 'चुनें कि आप TRUST क्रेडिट सिस्टम में कैसे प्रवेश करना चाहते हैं',
+    role_select_subtitle: 'चुनें कि आप Cred0 क्रेडिट सिस्टम में कैसे प्रवेश करना चाहते हैं',
     role_borrower_cta: 'उधारकर्ता लॉगिन (Borrower Login)',
     role_borrower_desc: 'अपना क्रेडिट प्रोफाइल बनाएं, माइक्रो-लोन ऑफर अनलॉक करें और अपना ट्रस्ट स्कोर बढ़ाएं।',
     role_lender_cta: 'ऋणदाता लॉगिन (Lender Login)',
@@ -402,7 +389,7 @@ export const translations: Record<Language, Record<string, string>> = {
     upi_limit_notice: 'अधिकतम 10 यूपीआई स्क्रीनशॉट की सीमा पूरी हो गई। अतिरिक्त फाइलें छोड़ दी गईं।',
   },
   bn: {
-    brand_name: 'TRUST',
+    brand_name: 'Cred0',
     tagline: 'অনানুষ্ঠানিক অর্থনীতির জন্য বিকল্প ক্রেডিট স্কোরিং',
     tagline_hi: 'ভরসা — প্রতি ক্ষুদ্র-ঋণে বিশ্বাস',
     tagline_bn: 'ভরসা — প্রতি ক্ষুদ্র-ঋণে বিশ্বাস',
@@ -415,17 +402,8 @@ export const translations: Record<Language, Record<string, string>> = {
     mode_mock: 'রুল-ভিত্তিক মক ইঞ্জিন',
     mode_local: 'লোকাল মডেল এপিআই',
     mode_gemini: 'জেমিনি হাইব্রিড এআই ইঞ্জিন',
-    
-    // Auth & Onboarding
-    auth_title: 'TRUST-এ স্বাগতম',
-    auth_subtitle: 'ঐতিহ্যবাহী ব্যাংক রেকর্ড ছাড়াই তৈরি করুন আপনার ন্যায্য ক্রেডিট স্কোর',
-    mobile_label: '১০-ডিজিটের মোবাইল নম্বর',
-    mobile_placeholder: '৯৮৭৬৫ ৪৩২১০',
-    get_otp: 'ওটিপি কোড পান',
-    verify_otp: 'যাচাই করুন এবং এগিয়ে যান',
 
     // Borrower Steps
-    step_0: 'ফোন যাচাইকরণ',
     step_1: 'মৌলিক তথ্য',
     step_2: 'পরিবারের প্রোফাইল',
     step_3: 'সম্পদ বিবরণী',
@@ -487,13 +465,13 @@ export const translations: Record<Language, Record<string, string>> = {
     doc_verified: 'নথিপত্র সফলভাবে যাচাই করা হয়েছে',
     doc_skip: 'এখনই এড়িয়ে যান এবং স্কোর দেখুন',
 
-    // Step 6: Trust Score
-    score_reveal_title: 'আপনার TRUST স্কোর',
+    // Step 6: Cred0 Score
+    score_reveal_title: 'আপনার Cred0 স্কোর',
     score_scale_label: 'স্কেল: ৩০০ থেকে ৯০০ পয়েন্ট',
     zone_building: 'গঠনমূলক (Building)',
     zone_fair: 'মোটামুটি (Fair)',
     zone_good: 'ভালো (Good)',
-    zone_trusted: 'বিশ্বস্ত (Trusted)',
+    zone_Cred0ed: 'বিশ্বস্ত (Cred0ed)',
     why_this_score: 'স্কোরের কারণ (ব্যাখ্যামূলক পয়েন্ট)',
     shap_positive: 'ইতিবাচক অবদানকারী কারণসমূহ',
     shap_negative: 'স্কোর বাড়ানোর সুযোগসমূহ',
@@ -561,11 +539,11 @@ export const translations: Record<Language, Record<string, string>> = {
     loading: 'প্রক্রিয়াকরণ চলছে...',
 
     // Welcome & Role Gate
-    welcome_title: 'TRUST ক্রেডিট প্ল্যাটফর্মে স্বাগতম',
+    welcome_title: 'Cred0 ক্রেডিট প্ল্যাটফর্মে স্বাগতম',
     welcome_body: 'অনানুষ্ঠানিক অর্থনীতির কর্মীদের জন্য একটি স্বচ্ছ ও ব্যাখ্যামূলক ক্রেডিট-স্কোরিং ইঞ্জিন, যা বৈষম্যহীন ঋণের সুযোগ ও সুস্পষ্ট স্কোর বৃদ্ধির নির্দেশনা প্রদান করে।',
     welcome_cta: 'শুরু করুন',
     role_select_title: 'আপনার প্রবেশ পোর্টাল বেছে নিন',
-    role_select_subtitle: 'TRUST ক্রেডিট সিস্টেমে কীভাবে প্রবেশ করতে চান তা নির্বাচন করুন',
+    role_select_subtitle: 'Cred0 ক্রেডিট সিস্টেমে কীভাবে প্রবেশ করতে চান তা নির্বাচন করুন',
     role_borrower_cta: 'ঋণগ্রহীতা লগইন (Borrower Login)',
     role_borrower_desc: 'আপনার বিকল্প ক্রেডিট প্রোফাইল তৈরি করুন, মাইক্রো-লোন অফার আনলক করুন এবং স্কোর বাড়ান।',
     role_lender_cta: 'ঋণদাতা লগইন (Lender Login)',

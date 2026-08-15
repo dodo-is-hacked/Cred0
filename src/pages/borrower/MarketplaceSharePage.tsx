@@ -47,7 +47,7 @@ export const MarketplaceSharePage: React.FC = () => {
                 Your application has been broadcast to all registered lenders.
               </p>
               <p className="text-xs text-theme-secondary">
-                Lenders in the TRUST Marketplace can now review your explainable trust score and issue loan offers. You can track sanction status below or switch views anytime using the top navigation bar.
+                Lenders in the Cred0 Marketplace can now review your explainable Cred0 score and issue loan offers. You can track sanction status below or switch views anytime using the top navigation bar.
               </p>
             </div>
           ) : (

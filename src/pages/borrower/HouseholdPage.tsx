@@ -38,7 +38,7 @@ export const HouseholdPage: React.FC = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-6 sm:px-6">
-      <StepTracker currentStep={2} />
+      <StepTracker currentStep={1} />
 
       <div className="space-y-6 rounded-2xl border border-theme-border bg-theme-surface p-6 shadow-xs">
         <div>

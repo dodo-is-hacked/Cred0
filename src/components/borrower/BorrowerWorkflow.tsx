@@ -249,93 +249,7 @@ export const BorrowerWorkflow: React.FC<BorrowerWorkflowProps> = ({
         </div>
       </div>
 
-      {/* STEP 0: PHONE & OTP AUTH */}
-      {activeStep === 0 && (
-        <div className="space-y-6 rounded-2xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-xs">
-          <div className="text-center max-w-md mx-auto space-y-2">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-theme-soft text-theme-accent">
-              <Smartphone className="h-7 w-7" />
-            </div>
-            <h2 className="font-serif-lora text-2xl sm:text-3xl font-bold text-theme-primary">
-              {t.auth_title}
-            </h2>
-            <p className="text-xs sm:text-sm text-theme-secondary leading-relaxed">
-              {t.auth_subtitle}
-            </p>
-          </div>
-
-          <div className="max-w-md mx-auto space-y-5">
-            <div>
-              <label className="block text-xs font-bold uppercase text-theme-secondary mb-1.5">
-                {t.mobile_label}
-              </label>
-              <div className="flex h-[52px] rounded-xl border border-theme-border bg-theme-bg overflow-hidden focus-within:border-theme-accent">
-                <span className="flex items-center px-4 bg-theme-surface border-r border-theme-border text-sm font-bold text-theme-secondary">
-                  +91
-                </span>
-                <input
-                  type="text"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Enter 10-digit mobile number"
-                  className="w-full px-4 py-3 text-base font-semibold text-theme-primary bg-transparent focus:outline-none"
-                />
-              </div>
-            </div>
-
-            {!otpSent ? (
-              <button
-                onClick={() => {
-                  if (phone.trim().length >= 10) {
-                    setOtpSent(true);
-                    setOtp('1234');
-                  } else {
-                    setOtpSent(true);
-                    setOtp('1234');
-                  }
-                }}
-                className="w-full h-[54px] rounded-xl bg-theme-accent text-base font-bold text-white shadow-sm hover:opacity-90 flex items-center justify-center gap-2"
-              >
-                <span>Send Verification OTP</span>
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            ) : (
-              <div className="space-y-4 rounded-2xl border border-theme-border bg-theme-bg p-4">
-                <div>
-                  <label className="block text-xs font-bold uppercase text-theme-secondary mb-1">
-                    Enter 4-Digit OTP
-                  </label>
-                  <input
-                    type="text"
-                    value={otp}
-                    maxLength={4}
-                    onChange={(e) => {
-                      setOtp(e.target.value);
-                      if (e.target.value.length === 4) {
-                        setOtpVerified(true);
-                      }
-                    }}
-                    placeholder="1234"
-                    className="w-full h-[52px] rounded-xl border border-theme-border bg-theme-surface px-4 text-center text-xl font-mono font-bold tracking-widest text-theme-primary focus:border-theme-accent focus:outline-none"
-                  />
-                  <p className="text-xs text-theme-accent mt-1.5 text-center font-medium">
-                    Demo OTP code pre-filled as 1234.
-                  </p>
-                </div>
-
-                <button
-                  onClick={handleNextStep}
-                  className="w-full h-[54px] rounded-xl bg-theme-accent text-base font-bold text-white shadow-sm hover:opacity-90 flex items-center justify-center gap-2"
-                >
-                  <span>Verify & Continue</span>
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
+      
       {/* STEP 1: BASIC DATA & OCCUPATION */}
       {activeStep === 1 && (
         <div className="space-y-6 rounded-2xl border border-theme-border bg-theme-surface p-6 sm:p-8 shadow-xs">
@@ -774,7 +688,7 @@ export const BorrowerWorkflow: React.FC<BorrowerWorkflowProps> = ({
                   Your application has been broadcast to all registered lenders.
                 </p>
                 <p className="text-xs text-theme-secondary">
-                  Lenders in the TRUST Marketplace can now review your explainable trust score and issue loan offers. You can track sanction status below or switch views anytime using the top navigation bar.
+                  Lenders in the Cred0 Marketplace can now review your explainable Cred0 score and issue loan offers. You can track sanction status below or switch views anytime using the top navigation bar.
                 </p>
               </div>
             ) : (

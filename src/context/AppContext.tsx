@@ -31,9 +31,9 @@ interface AppContextType {
   selectedAuditApp: LoanApplication | null;
   setSelectedAuditApp: (app: LoanApplication | null) => void;
   handleSelectBorrower: (b: BorrowerProfile) => Promise<void>;
-  handleNewBorrower: () => Promise<void>;
+  handleNewBorrower: () => Promise<BorrowerProfile>;
   refreshActiveBorrowerScore: () => Promise<void>;
-  handleUpdateBorrower: (updated: BorrowerProfile) => Promise<void>;
+  handleUpdateBorrower: (updated: Partial<BorrowerProfile>) => Promise<void>;
   handleApproveLoan: (
     appId: string,
     offerData: {
@@ -52,21 +52,21 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
-    return (localStorage.getItem('trust_lang_v1') as Language) || 'en';
+    return (localStorage.getItem('Cred0_lang_v1') as Language) || 'en';
   });
 
   const [theme, setThemeState] = useState<Theme>(() => {
-    return (localStorage.getItem('trust_theme_v1') as Theme) || 'light';
+    return (localStorage.getItem('Cred0_theme_v1') as Theme) || 'light';
   });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('trust_theme_v1', theme);
+    localStorage.setItem('Cred0_theme_v1', theme);
   }, [theme]);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem('trust_lang_v1', lang);
+    localStorage.setItem('Cred0_lang_v1', lang);
   };
 
   const toggleTheme = () => {
@@ -95,20 +95,49 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [applications, setApplications] = useState<LoanApplication[]>([]);
   const [selectedAuditApp, setSelectedAuditApp] = useState<LoanApplication | null>(null);
 
+  const handleNewBorrower = useCallback(async (): Promise<BorrowerProfile> => {
+    const newProfile: BorrowerProfile = {
+      id: `bor_${Date.now()}`,
+      name: '',
+      phone: '',
+      language,
+      occupation: 'street_vendor',
+      age: 30,
+      education: 'secondary',
+      householdSize: 4,
+      earningMembers: 1,
+      assets: [],
+      communityTie: { active: false },
+      documentVerified: false,
+      createdAt: new Date().toISOString(),
+      sharedWithMarketplace: true
+    };
+
+    const saved = await api.saveProfile(newProfile);
+    setBorrowers(api.getAllProfiles());
+    setCurrentBorrower(saved);
+    const score = await api.computeScore(saved);
+    setScoreResult(score);
+    return saved;
+  }, [language]);
+
   const loadData = useCallback(async () => {
     const allProfiles = api.getAllProfiles();
     setBorrowers(allProfiles);
 
     if (allProfiles.length > 0) {
-      const active = currentBorrower || allProfiles[0];
+      const active = allProfiles[0];
       setCurrentBorrower(active);
       const score = await api.computeScore(active);
       setScoreResult(score);
+    } else {
+      // Create initial active session applicant
+      await handleNewBorrower();
     }
 
     const apps = await api.getApplications();
     setApplications(apps);
-  }, []);
+  }, [handleNewBorrower]);
 
   useEffect(() => {
     loadData();
@@ -135,40 +164,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setScoreResult(score);
   };
 
-  const handleUpdateBorrower = async (updated: BorrowerProfile) => {
-    const saved = await api.saveProfile(updated);
-    setCurrentBorrower(saved);
-    setBorrowers(api.getAllProfiles());
-    const score = await api.computeScore(saved);
-    setScoreResult(score);
-  };
-
-  const handleNewBorrower = async () => {
-    const newProfile: BorrowerProfile = {
-      id: `bor_user_${Date.now()}`,
-      name: 'User Applicant',
-      phone: '98765 43210',
+  const handleUpdateBorrower = async (updated: Partial<BorrowerProfile>) => {
+    const baseProfile = currentBorrower || {
+      id: `bor_${Date.now()}`,
+      name: '',
+      phone: '',
       language,
       occupation: 'street_vendor',
-      age: 32,
+      age: 30,
       education: 'secondary',
       householdSize: 4,
       earningMembers: 1,
       assets: [],
       communityTie: { active: false },
       documentVerified: false,
-      location: 'Patna, Bihar',
       createdAt: new Date().toISOString(),
       sharedWithMarketplace: true
     };
 
-    const saved = await api.saveProfile(newProfile);
-    const updatedProfiles = api.getAllProfiles();
-    setBorrowers(updatedProfiles);
+    const merged = { ...baseProfile, ...updated };
+    const saved = await api.saveProfile(merged);
+
     setCurrentBorrower(saved);
+    setBorrowers(api.getAllProfiles());
     const score = await api.computeScore(saved);
     setScoreResult(score);
-    setRole('borrower');
   };
 
   const handleApproveLoan = async (

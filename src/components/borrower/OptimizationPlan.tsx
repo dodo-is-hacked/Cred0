@@ -28,7 +28,7 @@ export const OptimizationPlan: React.FC<OptimizationPlanProps> = ({
           Profile Fully Optimized
         </h3>
         <p className="text-xs text-theme-secondary max-w-md mx-auto">
-          Your profile contains all key trust verification markers. Share your profile with active lenders in the marketplace.
+          Your profile contains all key Cred0 verification markers. Share your profile with active lenders in the marketplace.
         </p>
       </div>
     );

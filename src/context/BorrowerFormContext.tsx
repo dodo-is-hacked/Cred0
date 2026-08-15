@@ -8,20 +8,13 @@ import {
   Offer,
   Gender,
   MaritalStatus,
-  SchoolType
+  SchoolType,
+  UploadedDoc
 } from '../types/types';
 import { useAppContext } from './AppContext';
 import { api } from '../services/api';
 
 interface BorrowerFormContextType {
-  phone: string;
-  setPhone: (val: string) => void;
-  otp: string;
-  setOtp: (val: string) => void;
-  otpSent: boolean;
-  setOtpSent: (val: boolean) => void;
-  otpVerified: boolean;
-  setOtpVerified: (val: boolean) => void;
   name: string;
   setName: (val: string) => void;
   gender: Gender;
@@ -56,26 +49,28 @@ interface BorrowerFormContextType {
   setCommunityActive: (val: boolean) => void;
   groupType: GroupType;
   setGroupType: (val: GroupType) => void;
+  assetDocuments: UploadedDoc[];
+  setAssetDocuments: (docs: UploadedDoc[]) => void;
+  communityDocuments: UploadedDoc[];
+  setCommunityDocuments: (docs: UploadedDoc[]) => void;
+  requestedLoanAmount?: number;
+  setRequestedLoanAmount: (amount?: number) => void;
   appliedActions: string[];
   isBroadcasting: boolean;
   broadcastDone: boolean;
   activeOffers: Offer[];
   saveCurrentStep: () => Promise<void>;
+  completeOnboarding: (amount?: number) => Promise<void>;
   handleApplyRecommendation: (actionKey: string) => Promise<void>;
   handleVerifyDoc: (type: string, name: string) => Promise<void>;
-  handleBroadcastToLenders: () => Promise<void>;
+  handleBroadcastToLenders: (amount?: number) => Promise<void>;
   handleAcceptOffer: (applicationId: string) => Promise<void>;
 }
 
 const BorrowerFormContext = createContext<BorrowerFormContextType | undefined>(undefined);
 
 export const BorrowerFormProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { currentBorrower, handleUpdateBorrower, refreshActiveBorrowerScore } = useAppContext();
-
-  const [phone, setPhone] = useState(currentBorrower?.phone || '');
-  const [otp, setOtp] = useState('');
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpVerified, setOtpVerified] = useState(false);
+  const { currentBorrower, handleUpdateBorrower } = useAppContext();
 
   const [name, setName] = useState<string>(currentBorrower?.name || '');
   const [gender, setGender] = useState<Gender>(currentBorrower?.gender || 'female');
@@ -98,15 +93,17 @@ export const BorrowerFormProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [communityActive, setCommunityActive] = useState<boolean>(currentBorrower?.communityTie?.active ?? true);
   const [groupType, setGroupType] = useState<GroupType>(currentBorrower?.communityTie?.groupType || 'shg');
 
+  const [assetDocuments, setAssetDocuments] = useState<UploadedDoc[]>(currentBorrower?.assetDocuments || []);
+  const [communityDocuments, setCommunityDocuments] = useState<UploadedDoc[]>(currentBorrower?.communityDocuments || []);
+  const [requestedLoanAmount, setRequestedLoanAmount] = useState<number | undefined>(currentBorrower?.requestedLoanAmount);
+
   const [appliedActions, setAppliedActions] = useState<string[]>([]);
   const [isBroadcasting, setIsBroadcasting] = useState(false);
   const [broadcastDone, setBroadcastDone] = useState(currentBorrower?.sharedWithMarketplace || false);
   const [activeOffers, setActiveOffers] = useState<Offer[]>([]);
 
-  // Sync state when currentBorrower changes
   useEffect(() => {
     if (currentBorrower) {
-      setPhone(currentBorrower.phone || '');
       setName(currentBorrower.name || '');
       setGender(currentBorrower.gender || 'female');
       setMaritalStatus(currentBorrower.maritalStatus || 'married');
@@ -124,6 +121,9 @@ export const BorrowerFormProvider: React.FC<{ children: React.ReactNode }> = ({ 
       setAssets(currentBorrower.assets || []);
       setCommunityActive(currentBorrower.communityTie?.active ?? false);
       setGroupType(currentBorrower.communityTie?.groupType || 'shg');
+      setAssetDocuments(currentBorrower.assetDocuments || []);
+      setCommunityDocuments(currentBorrower.communityDocuments || []);
+      setRequestedLoanAmount(currentBorrower.requestedLoanAmount);
       setBroadcastDone(currentBorrower.sharedWithMarketplace || false);
 
       api.getApplications().then(apps => {
@@ -137,32 +137,87 @@ export const BorrowerFormProvider: React.FC<{ children: React.ReactNode }> = ({ 
     }
   }, [currentBorrower]);
 
+  // Helper to remove any undefined keys before sending to Firestore
+  const sanitizeObject = (obj: any) => {
+    return JSON.parse(JSON.stringify(obj));
+  };
+
   const saveCurrentStep = async () => {
-    if (!currentBorrower) return;
-    const updatedProfile: BorrowerProfile = {
-      ...currentBorrower,
-      name,
-      phone,
-      gender,
-      maritalStatus,
-      hasChildren,
-      childrenSchoolType: hasChildren ? childrenSchoolType : undefined,
-      headOfHouseholdGender,
-      longTermIllness,
-      upiTransactionCount,
-      occupation,
-      age,
-      education,
-      householdSize,
-      earningMembers,
-      assets,
+    const rawProfile = {
+      id: currentBorrower?.id || `bor_${Date.now()}`,
+      name: name.trim() || 'Anonymous Borrower',
+      gender: gender || 'female',
+      maritalStatus: maritalStatus || 'married',
+      hasChildren: Boolean(hasChildren),
+      childrenSchoolType: hasChildren ? (childrenSchoolType || 'government') : null,
+      headOfHouseholdGender: headOfHouseholdGender || 'female',
+      longTermIllness: Boolean(longTermIllness),
+      upiTransactionCount: Number(upiTransactionCount) || 0,
+      occupation: occupation || 'street_vendor',
+      age: Number(age) || 30,
+      education: education || 'secondary',
+      householdSize: Number(householdSize) || 4,
+      earningMembers: Number(earningMembers) || 1,
+      assets: assets || [],
       communityTie: {
-        active: communityActive,
-        groupType: communityActive ? groupType : undefined
-      }
+        active: Boolean(communityActive),
+        groupType: communityActive ? (groupType || 'shg') : 'none'
+      },
+      assetDocuments: assetDocuments || [],
+      communityDocuments: communityDocuments || [],
+      requestedLoanAmount: requestedLoanAmount || 50000,
+      language: currentBorrower?.language || 'en',
+      documentVerified: currentBorrower?.documentVerified || false,
+      createdAt: currentBorrower?.createdAt || new Date().toISOString(),
+      sharedWithMarketplace: currentBorrower?.sharedWithMarketplace ?? true,
+      onboardingComplete: currentBorrower?.onboardingComplete || false
     };
 
-    await handleUpdateBorrower(updatedProfile);
+    const cleanProfile = sanitizeObject(rawProfile) as BorrowerProfile;
+    await handleUpdateBorrower(cleanProfile);
+  };
+
+  const completeOnboarding = async (amount?: number) => {
+    const finalAmount = amount !== undefined ? amount : (requestedLoanAmount || 50000);
+    const rawProfile = {
+      id: currentBorrower?.id || `bor_${Date.now()}`,
+      name: name.trim() || 'Anonymous Borrower',
+      gender: gender || 'female',
+      maritalStatus: maritalStatus || 'married',
+      hasChildren: Boolean(hasChildren),
+      childrenSchoolType: hasChildren ? (childrenSchoolType || 'government') : null,
+      headOfHouseholdGender: headOfHouseholdGender || 'female',
+      longTermIllness: Boolean(longTermIllness),
+      upiTransactionCount: Number(upiTransactionCount) || 0,
+      occupation: occupation || 'street_vendor',
+      age: Number(age) || 30,
+      education: education || 'secondary',
+      householdSize: Number(householdSize) || 4,
+      earningMembers: Number(earningMembers) || 1,
+      assets: assets || [],
+      communityTie: {
+        active: Boolean(communityActive),
+        groupType: communityActive ? (groupType || 'shg') : 'none'
+      },
+      assetDocuments: assetDocuments || [],
+      communityDocuments: communityDocuments || [],
+      requestedLoanAmount: finalAmount,
+      language: currentBorrower?.language || 'en',
+      documentVerified: currentBorrower?.documentVerified || false,
+      createdAt: currentBorrower?.createdAt || new Date().toISOString(),
+      sharedWithMarketplace: true,
+      onboardingComplete: true
+    };
+
+    const cleanProfile = sanitizeObject(rawProfile) as BorrowerProfile;
+    await handleUpdateBorrower(cleanProfile);
+
+    if (finalAmount > 0) {
+      setIsBroadcasting(true);
+      await api.shareWithMarketplace(cleanProfile.id, finalAmount);
+      setIsBroadcasting(false);
+      setBroadcastDone(true);
+    }
   };
 
   const handleUpdateUpiCount = async (count: number) => {
@@ -219,7 +274,7 @@ export const BorrowerFormProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
   const handleVerifyDoc = async (type: string, name: string) => {
     if (!currentBorrower) return;
-    const updated = {
+    const updated: BorrowerProfile = {
       ...currentBorrower,
       documentVerified: true,
       documentType: type,
@@ -228,10 +283,11 @@ export const BorrowerFormProvider: React.FC<{ children: React.ReactNode }> = ({ 
     await handleUpdateBorrower(updated);
   };
 
-  const handleBroadcastToLenders = async () => {
+  const handleBroadcastToLenders = async (amount?: number) => {
     if (!currentBorrower) return;
+    const reqAmt = amount !== undefined ? amount : (requestedLoanAmount || 50000);
     setIsBroadcasting(true);
-    await api.shareWithMarketplace(currentBorrower.id);
+    await api.shareWithMarketplace(currentBorrower.id, reqAmt);
     setIsBroadcasting(false);
     setBroadcastDone(true);
   };
@@ -250,14 +306,6 @@ export const BorrowerFormProvider: React.FC<{ children: React.ReactNode }> = ({ 
   return (
     <BorrowerFormContext.Provider
       value={{
-        phone,
-        setPhone,
-        otp,
-        setOtp,
-        otpSent,
-        setOtpSent,
-        otpVerified,
-        setOtpVerified,
         name,
         setName,
         gender,
@@ -292,11 +340,18 @@ export const BorrowerFormProvider: React.FC<{ children: React.ReactNode }> = ({ 
         setCommunityActive,
         groupType,
         setGroupType,
+        assetDocuments,
+        setAssetDocuments,
+        communityDocuments,
+        setCommunityDocuments,
+        requestedLoanAmount,
+        setRequestedLoanAmount,
         appliedActions,
         isBroadcasting,
         broadcastDone,
         activeOffers,
         saveCurrentStep,
+        completeOnboarding,
         handleApplyRecommendation,
         handleVerifyDoc,
         handleBroadcastToLenders,

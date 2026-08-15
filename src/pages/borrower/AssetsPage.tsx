@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
 import { useBorrowerFormContext } from '../../context/BorrowerFormContext';
 import { StepTracker } from '../../components/borrower/StepTracker';
+import { MultiFileUploadCard } from '../../components/borrower/MultiFileUploadCard';
 import { translations } from '../../i18n/translations';
 import { Asset } from '../../types/types';
 import { Sprout, Building, Truck, Store, Users, ArrowRight } from 'lucide-react';
@@ -12,6 +13,8 @@ export const AssetsPage: React.FC = () => {
   const {
     assets,
     toggleAsset,
+    assetDocuments,
+    setAssetDocuments,
     saveCurrentStep
   } = useBorrowerFormContext();
 
@@ -29,7 +32,7 @@ export const AssetsPage: React.FC = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-6 sm:px-6">
-      <StepTracker currentStep={3} />
+      <StepTracker currentStep={2} />
 
       <div className="space-y-6 rounded-2xl border border-theme-border bg-theme-surface p-6 shadow-xs">
         <div>
@@ -70,6 +73,14 @@ export const AssetsPage: React.FC = () => {
             );
           })}
         </div>
+
+        {/* Optional MultiFileUploadCard for Asset Documents */}
+        <MultiFileUploadCard
+          title="Supporting documents for your assets (optional)"
+          subtitle="Upload ownership certificates, land titles, registration documents, or photos if available."
+          files={assetDocuments}
+          onChange={setAssetDocuments}
+        />
 
         <div className="flex justify-between pt-4 border-t border-theme-border">
           <button

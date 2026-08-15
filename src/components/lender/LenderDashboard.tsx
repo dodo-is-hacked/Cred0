@@ -58,8 +58,7 @@ export const LenderDashboard: React.FC<LenderDashboardProps> = ({
   // Filter & Sort Logic for currently active tab
   const filteredApps = currentTabApps.filter((app) => {
     const nameMatch = app.borrowerProfile.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const locMatch = app.borrowerProfile.location.toLowerCase().includes(searchQuery.toLowerCase());
-    const queryMatches = searchQuery === '' || nameMatch || locMatch;
+    const queryMatches = searchQuery === '' || nameMatch;
 
     const zoneMatches = zoneFilter === 'all' || app.scoreResult.zone === zoneFilter;
     const occMatches = occFilter === 'all' || app.borrowerProfile.occupation === occFilter;
@@ -181,7 +180,7 @@ export const LenderDashboard: React.FC<LenderDashboardProps> = ({
             className="h-10 rounded-xl border border-theme-border bg-theme-bg px-3 text-xs font-bold text-theme-primary focus:outline-none"
           >
             <option value="all">{t.filter_zone}: {t.filter_all}</option>
-            <option value="Trusted">Trusted (800+)</option>
+            <option value="Cred0ed">Cred0ed (800+)</option>
             <option value="Good">Good (650-799)</option>
             <option value="Fair">Fair (500-649)</option>
             <option value="Building">Building (300-499)</option>
@@ -236,7 +235,7 @@ export const LenderDashboard: React.FC<LenderDashboardProps> = ({
             >
               <div className="space-y-4">
                 
-                {/* Header Row: Borrower Name, Location & Zone Badge */}
+                {/* Header Row: Borrower Name & Zone Badge */}
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <h3 className="font-serif-lora text-lg font-bold text-theme-primary group-hover:text-theme-accent">
@@ -244,7 +243,6 @@ export const LenderDashboard: React.FC<LenderDashboardProps> = ({
                     </h3>
                     <p className="text-xs text-theme-secondary flex items-center gap-1 mt-0.5">
                       <MapPin className="h-3 w-3 text-theme-accent" />
-                      <span>{b.location}</span>
                     </p>
                   </div>
 
@@ -257,7 +255,7 @@ export const LenderDashboard: React.FC<LenderDashboardProps> = ({
                   </span>
                 </div>
 
-                {/* Trust Score & Risk Tier Row */}
+                {/* Cred0 Score & Risk Tier Row */}
                 <div className="grid grid-cols-2 gap-2 p-3 rounded-xl bg-theme-bg border border-theme-border">
                   <div>
                     <span className="text-[10px] font-bold uppercase text-theme-secondary block">

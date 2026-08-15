@@ -12,8 +12,16 @@ export type Gender = 'male' | 'female' | 'other';
 export type MaritalStatus = 'single' | 'married' | 'widowed' | 'divorced';
 export type SchoolType = 'government' | 'private' | 'not_in_school';
 
-export type ScoreZone = 'Building' | 'Fair' | 'Good' | 'Trusted';
+export type ScoreZone = 'Building' | 'Fair' | 'Good' | 'Cred0ed';
 export type RiskCategory = 'Low' | 'Moderate' | 'High';
+
+export interface UploadedDoc {
+  id: string;
+  name: string;
+  type: string;
+  size: string;
+  uploadedAt: string;
+}
 
 export interface BorrowerProfile {
   id: string;
@@ -40,9 +48,12 @@ export interface BorrowerProfile {
   documentVerified: boolean;
   documentType?: string;
   documentName?: string;
-  location: string;
   createdAt: string;
   sharedWithMarketplace?: boolean;
+  assetDocuments?: UploadedDoc[];
+  communityDocuments?: UploadedDoc[];
+  requestedLoanAmount?: number;
+  onboardingComplete?: boolean;
 }
 
 export interface ShapFactor {
@@ -94,6 +105,7 @@ export interface LoanApplication {
   status: 'pending' | 'approved' | 'declined';
   offer?: Offer;
   createdAt: string;
+  requestedLoanAmount?: number;
 }
 
 export interface LenderProfile {

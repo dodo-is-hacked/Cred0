@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext';
 import { useBorrowerFormContext } from '../../context/BorrowerFormContext';
 import { StepTracker } from '../../components/borrower/StepTracker';
+import { MultiFileUploadCard } from '../../components/borrower/MultiFileUploadCard';
 import { translations } from '../../i18n/translations';
 import { GroupType } from '../../types/types';
 import { Check, ArrowRight } from 'lucide-react';
@@ -14,6 +15,8 @@ export const CommunityPage: React.FC = () => {
     setCommunityActive,
     groupType,
     setGroupType,
+    communityDocuments,
+    setCommunityDocuments,
     saveCurrentStep
   } = useBorrowerFormContext();
 
@@ -31,7 +34,7 @@ export const CommunityPage: React.FC = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-6 sm:px-6">
-      <StepTracker currentStep={4} />
+      <StepTracker currentStep={3} />
 
       <div className="space-y-6 rounded-2xl border border-theme-border bg-theme-surface p-6 shadow-xs">
         <div>
@@ -94,6 +97,14 @@ export const CommunityPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Optional MultiFileUploadCard for Community Documents */}
+        <MultiFileUploadCard
+          title="Supporting documents for your group/community ties (optional)"
+          subtitle="Upload SHG passbooks, membership certificates, or meeting registers if available."
+          files={communityDocuments}
+          onChange={setCommunityDocuments}
+        />
 
         <div className="flex justify-between pt-4 border-t border-theme-border">
           <button

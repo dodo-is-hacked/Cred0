@@ -22,7 +22,7 @@ export const ScoreGauge: React.FC<ScoreGaugeProps> = ({ scoreResult, language })
   // Gauge colors by zone
   const getZoneColor = (z: string) => {
     switch (z) {
-      case 'Trusted':
+      case 'Cred0ed':
         return { main: '#059669', bg: '#D1FAE5', text: 'text-emerald-700 dark:text-emerald-300' };
       case 'Good':
         return { main: '#10B981', bg: '#E0E7FF', text: 'text-blue-700 dark:text-blue-300' };
@@ -43,7 +43,7 @@ export const ScoreGauge: React.FC<ScoreGaugeProps> = ({ scoreResult, language })
 
   const getZoneLabel = (z: string) => {
     switch (z) {
-      case 'Trusted': return t.zone_trusted;
+      case 'Cred0ed': return t.zone_Cred0ed;
       case 'Good': return t.zone_good;
       case 'Fair': return t.zone_fair;
       case 'Building':
@@ -81,7 +81,7 @@ export const ScoreGauge: React.FC<ScoreGaugeProps> = ({ scoreResult, language })
             stroke="#6EE7B7"
             strokeWidth="14"
           />
-          {/* Band 4: Trusted (800-900) */}
+          {/* Band 4: Cred0ed (800-900) */}
           <path
             d="M 167 68 A 80 80 0 0 1 180 100"
             fill="none"
@@ -118,7 +118,7 @@ export const ScoreGauge: React.FC<ScoreGaugeProps> = ({ scoreResult, language })
       <div className="ink-stamp-frame px-8 py-4 mb-4 flex flex-col items-center">
         <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-theme-secondary mb-1">
           <ShieldCheck className="w-4 h-4 text-theme-accent" />
-          <span>TRUST SCORE</span>
+          <span>Cred0 SCORE</span>
         </div>
         
         {/* Lora Display Numeral */}

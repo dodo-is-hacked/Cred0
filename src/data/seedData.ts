@@ -5,7 +5,7 @@ export const SEED_BORROWERS: BorrowerProfile[] = [];
 export const SEED_LENDERS: LenderProfile[] = [
   {
     id: 'len_gramin',
-    name: 'GraminTrust NBFC',
+    name: 'GraminCred0 NBFC',
     type: 'Regional NBFC',
     description: 'Focusing on rural financial inclusion & agricultural micro-loans',
     minScore: 500,

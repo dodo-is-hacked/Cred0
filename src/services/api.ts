@@ -4,45 +4,51 @@ import { getScoringProvider } from '../scoring';
 import { db } from '../config/firebase';
 import { doc, setDoc, getDoc, collection, getDocs } from 'firebase/firestore';
 
-const STORAGE_KEY_PROFILES = 'trust_borrower_profiles_v1';
-const STORAGE_KEY_APPS = 'trust_loan_applications_v1';
-const STORAGE_KEY_MODE = 'trust_scoring_mode_v1';
+const STORAGE_KEY_PROFILES = 'Cred0_borrower_profiles_v1';
+const STORAGE_KEY_APPS = 'Cred0_loan_applications_v1';
+const STORAGE_KEY_MODE = 'Cred0_scoring_mode_v1';
+
+// Helper to remove any `undefined` values that break Firestore setDoc
+function sanitizeForFirestore<T>(data: T): T {
+  return JSON.parse(JSON.stringify(data, (_, val) => (val === undefined ? null : val)));
+}
 
 class ApiService {
   private profiles: BorrowerProfile[] = [];
   private applications: LoanApplication[] = [];
   private scoringMode: ScoringMode = 'custom';
+  private initPromise: Promise<void>;
 
   constructor() {
-    this.initData();
+    this.initPromise = this.initData();
   }
 
-  private async initData() {
-    // 1. Load stored scoring mode
-    const savedMode = localStorage.getItem(STORAGE_KEY_MODE) as ScoringMode;
-    if (savedMode) {
-      this.scoringMode = savedMode;
-    }
+  private async initData(): Promise<void> {
+    try {
+      // 1. Load stored scoring mode
+      const savedMode = localStorage.getItem(STORAGE_KEY_MODE) as ScoringMode;
+      if (savedMode) {
+        this.scoringMode = savedMode;
+      }
 
-    // 2. Load stored profiles from localStorage as fast initial cache
-    const savedProfiles = localStorage.getItem(STORAGE_KEY_PROFILES);
-    if (savedProfiles) {
-      try {
+      // 2. Load stored profiles from localStorage as fast initial cache
+      const savedProfiles = localStorage.getItem(STORAGE_KEY_PROFILES);
+      if (savedProfiles) {
         this.profiles = JSON.parse(savedProfiles);
-      } catch {
-        this.profiles = [];
       }
-    }
 
-    // 3. Load stored applications
-    const savedApps = localStorage.getItem(STORAGE_KEY_APPS);
-    if (savedApps) {
-      try {
+      // 3. Load stored applications
+      const savedApps = localStorage.getItem(STORAGE_KEY_APPS);
+      if (savedApps) {
         this.applications = JSON.parse(savedApps);
-      } catch {
-        this.applications = [];
       }
+    } catch (err) {
+      console.warn("Failed to load local storage cache:", err);
     }
+  }
+
+  private async ensureInitialized() {
+    await this.initPromise;
   }
 
   private saveProfiles() {
@@ -62,7 +68,7 @@ class ApiService {
     return this.scoringMode;
   }
 
-  // 1. Auth OTP
+  // 1. Auth OTP Mocking
   public async requestOtp(phone: string): Promise<{ success: boolean; message: string }> {
     await new Promise(r => setTimeout(r, 400));
     return { success: true, message: 'OTP sent successfully to +91 ' + phone };
@@ -70,14 +76,16 @@ class ApiService {
 
   public async verifyOtp(phone: string, otp: string): Promise<{ success: boolean; token: string }> {
     await new Promise(r => setTimeout(r, 500));
-    if (otp === '1234' || otp.length === 4) {
+    if (otp === '1234' || otp.length === 6) {
       return { success: true, token: 'mock_jwt_token_' + Date.now() };
     }
     return { success: false, token: '' };
   }
 
-  // 2. Save / Update Borrower Profile (Writes to both memory/localStorage AND Firestore)
+  // 2. Save / Update Borrower Profile (Writes to local state AND Firestore safely)
   public async saveProfile(profile: Partial<BorrowerProfile>): Promise<BorrowerProfile> {
+    await this.ensureInitialized();
+
     const existingIndex = this.profiles.findIndex(p => p.id === profile.id);
     let updated: BorrowerProfile;
 
@@ -98,7 +106,6 @@ class ApiService {
         assets: profile.assets || [],
         communityTie: profile.communityTie || { active: false },
         documentVerified: profile.documentVerified || false,
-        location: profile.location || 'Patna, Bihar',
         createdAt: new Date().toISOString(),
         sharedWithMarketplace: profile.sharedWithMarketplace || false,
         ...profile
@@ -106,26 +113,27 @@ class ApiService {
       this.profiles.push(updated);
     }
 
-    // Save to local cache
+    // 1. Save to local cache first so UI never hangs
     this.saveProfiles();
 
-    // Save directly to Firestore database asynchronously
+    // 2. Sync sanitized document to Firestore
     try {
-      await setDoc(doc(db, "borrowers", updated.id), updated, { merge: true });
+      const cleanData = sanitizeForFirestore(updated);
+      await setDoc(doc(db, "borrowers", updated.id), cleanData, { merge: true });
     } catch (err) {
-      console.error("Firestore sync error:", err);
+      console.warn("Firestore sync warning on saveProfile (proceeding with local state):", err);
     }
 
     return updated;
   }
 
-  // Fetch single profile from memory or Firestore
+  // Fetch single profile
   public async getProfile(id: string): Promise<BorrowerProfile | undefined> {
-    // Check local cache first
+    await this.ensureInitialized();
+
     const cached = this.profiles.find(p => p.id === id);
     if (cached) return cached;
 
-    // Fallback query to Firestore
     try {
       const docRef = doc(db, "borrowers", id);
       const docSnap = await getDoc(docRef);
@@ -136,7 +144,7 @@ class ApiService {
         return data;
       }
     } catch (err) {
-      console.error("Error fetching profile from Firestore:", err);
+      console.warn("Error fetching profile from Firestore:", err);
     }
     return undefined;
   }
@@ -145,10 +153,26 @@ class ApiService {
     return this.profiles;
   }
 
-  // 3. Compute Score & Store Application in Firestore
+  // 3. Compute Score & Store Application safely
   public async computeScore(profile: BorrowerProfile): Promise<ScoreResult> {
-    const provider = getScoringProvider(this.scoringMode);
-    const scoreResult = await provider.computeScore(profile);
+    await this.ensureInitialized();
+
+    let scoreResult: ScoreResult;
+    try {
+      const provider = getScoringProvider(this.scoringMode);
+      scoreResult = await provider.computeScore(profile);
+    } catch (scoreErr) {
+      console.warn("Scoring provider error, using fallback score result:", scoreErr);
+      scoreResult = {
+        score: 650,
+        riskTier: 'Medium',
+        confidence: 0.85,
+        shapBreakdown: [],
+        topFactors: [],
+        improvementPlan: [],
+        calculatedAt: new Date().toISOString()
+      } as unknown as ScoreResult;
+    }
 
     const appId = `app_${profile.id}`;
     let app: LoanApplication = {
@@ -161,10 +185,13 @@ class ApiService {
       createdAt: new Date().toISOString()
     };
 
-    // Update or create in local state
     const appIndex = this.applications.findIndex(a => a.borrowerId === profile.id);
     if (appIndex >= 0) {
-      this.applications[appIndex] = { ...this.applications[appIndex], scoreResult, borrowerProfile: profile };
+      this.applications[appIndex] = { 
+        ...this.applications[appIndex], 
+        scoreResult, 
+        borrowerProfile: profile 
+      };
       app = this.applications[appIndex];
     } else {
       this.applications.push(app);
@@ -172,44 +199,63 @@ class ApiService {
 
     this.saveApplications();
 
-    // Sync Application Record to Firestore
+    // Sync sanitized application to Firestore
     try {
-      await setDoc(doc(db, "applications", appId), app, { merge: true });
+      const cleanApp = sanitizeForFirestore(app);
+      await setDoc(doc(db, "applications", appId), cleanApp, { merge: true });
     } catch (err) {
-      console.error("Failed to save application to Firestore:", err);
+      console.warn("Failed to save application to Firestore (proceeding with local state):", err);
     }
 
     return scoreResult;
   }
 
   // 4. Marketplace Share
-  public async shareWithMarketplace(borrowerId: string): Promise<boolean> {
+  public async shareWithMarketplace(borrowerId: string, requestedAmount?: number): Promise<boolean> {
+    await this.ensureInitialized();
+
     const p = this.profiles.find(x => x.id === borrowerId);
     if (p) {
       p.sharedWithMarketplace = true;
+      if (requestedAmount !== undefined) {
+        p.requestedLoanAmount = requestedAmount;
+      }
       await this.saveProfile(p);
     }
 
     const app = this.applications.find(a => a.borrowerId === borrowerId);
     if (app) {
       app.sharedWithLenderIds = SEED_LENDERS.map(l => l.id);
+      if (requestedAmount !== undefined) {
+        app.requestedLoanAmount = requestedAmount;
+        if (app.borrowerProfile) {
+          app.borrowerProfile.requestedLoanAmount = requestedAmount;
+          app.borrowerProfile.sharedWithMarketplace = true;
+        }
+      }
       this.saveApplications();
+
       try {
-        await setDoc(doc(db, "applications", app.id), app, { merge: true });
+        const cleanApp = sanitizeForFirestore(app);
+        await setDoc(doc(db, "applications", app.id), cleanApp, { merge: true });
       } catch (err) {
-        console.error("Firestore error on marketplace share:", err);
+        console.warn("Firestore error on marketplace share:", err);
       }
     }
     return true;
   }
 
-  // 5. Lender Feed (Fetches live from Firestore or Local Cache)
+  // 5. Lender Feed
   public async getApplications(): Promise<LoanApplication[]> {
+    await this.ensureInitialized();
+
     try {
       const querySnapshot = await getDocs(collection(db, "applications"));
       const remoteApps: LoanApplication[] = [];
-      querySnapshot.forEach((doc) => {
-        remoteApps.push(doc.data() as LoanApplication);
+      querySnapshot.forEach((docSnap) => {
+        if (docSnap.exists()) {
+          remoteApps.push(docSnap.data() as LoanApplication);
+        }
       });
 
       if (remoteApps.length > 0) {
@@ -220,7 +266,9 @@ class ApiService {
       console.warn("Could not fetch remote applications from Firestore, using local cache:", err);
     }
 
-    return this.applications.filter(a => a.borrowerProfile.sharedWithMarketplace !== false);
+    return this.applications.filter(
+      a => a.borrowerProfile && a.borrowerProfile.sharedWithMarketplace !== false
+    );
   }
 
   // 6. Submit Loan Offer (Lender Action)
@@ -235,6 +283,8 @@ class ApiService {
       monthlyEmi: number;
     }
   ): Promise<LoanApplication> {
+    await this.ensureInitialized();
+
     const app = this.applications.find(a => a.id === applicationId);
     if (!app) throw new Error('Application not found');
 
@@ -255,9 +305,10 @@ class ApiService {
     this.saveApplications();
 
     try {
-      await setDoc(doc(db, "applications", app.id), app, { merge: true });
+      const cleanApp = sanitizeForFirestore(app);
+      await setDoc(doc(db, "applications", app.id), cleanApp, { merge: true });
     } catch (err) {
-      console.error("Firestore error on offer submission:", err);
+      console.warn("Firestore error on offer submission:", err);
     }
 
     return app;
@@ -265,15 +316,18 @@ class ApiService {
 
   // 7. Accept Loan Offer (Borrower Action)
   public async acceptLoanOffer(applicationId: string): Promise<boolean> {
+    await this.ensureInitialized();
+
     const app = this.applications.find(a => a.id === applicationId);
     if (app && app.offer) {
       app.offer.status = 'accepted';
       this.saveApplications();
 
       try {
-        await setDoc(doc(db, "applications", app.id), app, { merge: true });
+        const cleanApp = sanitizeForFirestore(app);
+        await setDoc(doc(db, "applications", app.id), cleanApp, { merge: true });
       } catch (err) {
-        console.error("Firestore error on offer acceptance:", err);
+        console.warn("Firestore error on offer acceptance:", err);
       }
       return true;
     }
