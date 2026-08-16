@@ -1,28 +1,14 @@
-import { Language } from '../types';
+import { Language } from '../types/types';
 
 export const translations: Record<Language, Record<string, string>> = {
   en: {
     brand_name: 'Cred0',
     tagline: 'Alternative Credit Scoring for the Informal Economy',
-    
+
     // Roles & Navigation
     role_borrower: 'Borrower View',
     role_lender: 'Lender Audit View',
     switch_profile: 'Switch Profile',
-    scoring_mode: 'Scoring Engine',
-    mode_mock: 'Deterministic Mock Engine',
-    mode_local: 'Local Model API',
-    mode_gemini: 'Gemini Hybrid AI Engine',
-
-    // Borrower Steps
-    step_1: 'Basic Data',
-    step_2: 'Household Profile',
-    step_3: 'Asset Holdings',
-    step_4: 'Community Ties',
-    step_5: 'Document Verification',
-    step_6: 'Cred0 Score Reveal',
-    step_7: 'Score Optimization',
-    step_8: 'Marketplace Submission',
 
     // Step 1: Basic Data
     occupation_title: 'Primary Occupation',
@@ -31,7 +17,7 @@ export const translations: Record<Language, Record<string, string>> = {
     occ_gig_worker: 'Gig Delivery Rider / Driver',
     occ_small_farmer: 'Small / Marginal Farmer',
     occ_self_employed: 'Self-Employed / Artisan',
-    
+
     age_label: 'Age (Years)',
     education_label: 'Education Level',
     edu_none: 'No Formal Education',
@@ -73,11 +59,9 @@ export const translations: Record<Language, Record<string, string>> = {
     doc_preset_2: 'FPO Land Record Certificate (Nadia)',
     doc_preset_3: 'Trade License Vending Permit (Kolkata)',
     doc_verifying: 'Verifying document records...',
-    doc_verified: 'Documents Verified Successfully',
     doc_skip: 'Skip for now & view initial score',
 
-    // Step 6: Cred0 Score
-    score_reveal_title: 'Your Cred0 Score',
+    // Score & Explanations
     score_scale_label: 'Scale: 300 to 900 Points',
     zone_building: 'Building',
     zone_fair: 'Fair',
@@ -88,22 +72,38 @@ export const translations: Record<Language, Record<string, string>> = {
     shap_negative: 'Opportunities to Increase Score',
     points: 'pts',
 
-    // Step 7: Optimization Plan
+    // Score Optimization Plan
     opt_title: 'Actionable Score Optimization Plan',
     opt_subtitle: 'Simple steps you can take to boost your creditworthiness',
-    apply_sim: 'Simulate Action',
+    opt_eyebrow: 'SCORE OPTIMIZATION',
+    opt_heading: 'Your personalized path to a stronger score',
+    opt_subheading: 'Simulate verification actions to increase your Cred0 score and unlock lower interest rates from micro-lenders.',
+    active_verifications: 'Active Verifications & Actions',
+    credit_signals_title: 'Credit Signal Strengths',
+    status_applied: 'Applied',
+    status_available: 'Available',
+    simulate_action: 'Simulate Action',
+    profile_optimized_title: 'Profile Fully Optimized',
+    profile_optimized_desc: 'Your profile contains all key Cred0 verification markers. Share your profile with active lenders in the marketplace.',
 
-    // Step 8: Marketplace
-    market_title: 'Share Profile with Lenders',
-    market_subtitle: 'Broadcast your verified profile to Cred0worthy micro-finance institutions and impact lenders',
-    share_cta: 'Send Request to Lenders',
-    shared_success: 'Request Sent to Lenders!',
-    shared_msg: 'Your application has been broadcast to all registered lenders.',
-    jump_lender: 'Switch to Lender Audit View to Underwrite',
-    offers_title: 'Loan Offers Received from Lenders',
+    // Borrower Dashboard Redesign Keys
+    dashboard_eyebrow: 'BORROWER CREDIT DASHBOARD',
+    dashboard_title_welcome: 'Welcome,',
+    dashboard_hero_subtitle: 'Your real-time alternative credit score, personalized improvement actions, and verified lender loan offers.',
+    update_profile_data: 'Update Data',
+    score_breakdown_eyebrow: 'EXPLAINABLE SIGNALS',
+    marketplace_eyebrow: 'MARKETPLACE SANCTIONS',
+    marketplace_title: 'Loan Sanctions & Marketplace Status',
+    broadcasting_pill: 'Broadcasting to Lenders',
+    requested_credit_amount: 'Requested Credit Amount',
+    ready_to_request: 'Ready to request credit from lenders?',
+    ready_to_request_desc: 'You skipped broadcasting your loan request during onboarding. You can broadcast your verified alternative credit profile anytime to receive competitive micro-credit offers.',
+    send_request_btn: 'Send Request to Lenders (Step 5)',
+    market_live_desc: 'Your profile and Cred0 score are live in the lender marketplace. Lenders will evaluate your application and issue loan offers shortly.',
+    sanctioned_pill: 'Sanctioned',
+    offer_accepted_badge: 'Offer Accepted',
     no_offers: 'No active offers yet. Lenders will review your profile shortly.',
     accept_offer: 'Accept Loan Offer',
-    offer_accepted: 'Offer Accepted! Funds will be disbursed shortly.',
 
     // Lender Dashboard
     lender_dash_title: 'Marketplace Applications Feed',
@@ -118,18 +118,14 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Audit Panel
     audit_title: 'Detailed Credit Audit Panel',
-    borrower_overview: 'Borrower Overview',
     risk_diagnostics: 'Risk Diagnostics',
     default_prob: 'Default Probability %',
     risk_cat: 'Risk Category',
-    risk_low: 'Low Risk',
-    risk_mod: 'Moderate Risk',
-    risk_high: 'High Risk',
     waterfall_title: 'SHAP Feature Contribution Waterfall',
     waterfall_sub: 'Visualizing exact additions (+green) and deductions (-red) from 300 base score',
     base_score: 'Base Score (300)',
     final_score: 'Final Score',
-    
+
     underwriting_title: 'Loan Underwriting Controls',
     loan_amount: 'Sanctioned Loan Amount',
     interest_rate: 'Interest Rate (% p.a.)',
@@ -140,14 +136,11 @@ export const translations: Record<Language, Record<string, string>> = {
     modal_confirm_title: 'Confirm Micro-Loan Sanction',
     modal_confirm_msg: 'Are you sure you want to offer this loan to',
     confirm_sanction: 'Confirm & Send Sanction Offer',
-    offer_sent_success: 'Loan Offer Sent Successfully to Borrower!',
-    
+
     // Common
     next: 'Continue',
     back: 'Back',
     cancel: 'Cancel',
-    save: 'Save Changes',
-    loading: 'Processing...',
 
     // Welcome & Role Gate
     welcome_title: 'Welcome to Cred0 Credit Platform',
@@ -159,7 +152,6 @@ export const translations: Record<Language, Record<string, string>> = {
     role_borrower_desc: 'Build your alternative credit profile, unlock micro-credit offers, and optimize your financial Cred0 score.',
     role_lender_cta: 'Lender Login',
     role_lender_desc: 'Access applicant feeds, inspect SHAP feature attribution waterfalls, and sanction micro-loans with full auditability.',
-    auth_subtitle_lender: 'Enter your authorized mobile number to access the Lender Underwriting Portal',
     switch_lender: 'Switch Lender Entity',
 
     // Borrower Profile & Family Fields
@@ -190,38 +182,13 @@ export const translations: Record<Language, Record<string, string>> = {
     upi_limit_notice: 'Maximum limit of 10 UPI screenshots reached. Extra files were skipped.',
   },
   hi: {
-    brand_name: 'C',
+    brand_name: 'Cred0',
     tagline: 'अनौपचारिक अर्थव्यवस्था के लिए निष्पक्ष क्रेडिट स्कोरिंग',
-    tagline_hi: 'भरोसा — हर सूक्ष्म-ऋण में विश्वास',
-    tagline_bn: 'भरोसा — हर सूक्ष्म-ऋण में विश्वास',
-    
+
     // Roles & Navigation
     role_borrower: 'उधारकर्ता दृश्य (Borrower)',
     role_lender: 'ऋणदाता मूल्यांकन दृश्य (Lender)',
     switch_profile: 'डेमो उधारकर्ता बदलें',
-    scoring_mode: 'स्कोरिंग इंजन',
-    mode_mock: 'नियम-आधारित मॉब इंजन',
-    mode_local: 'लोकल मॉडल एपीआई',
-    mode_gemini: 'जेमिनी हाइब्रिड एआई इंजन',
-    
-    // Auth & Onboarding
-    auth_title: 'Cred0 में आपका स्वागत है',
-    auth_subtitle: 'बिना बैंक रिकॉर्ड के अपना निष्पक्ष क्रेडिट स्कोर बनाएं',
-    mobile_label: '10 अंकों का मोबाइल नंबर',
-    mobile_placeholder: '98765 43210',
-    get_otp: 'ओटीपी कोड प्राप्त करें',
-    verify_otp: 'सत्यापित करें और आगे बढ़ें',
-
-    // Borrower Steps
-    step_0: 'फ़ोन सत्यापन',
-    step_1: 'मूल जानकारी',
-    step_2: 'परिवार विवरण',
-    step_3: 'संपत्ति विवरण',
-    step_4: 'सामुदायिक संबंध',
-    step_5: 'दस्तावेज़ सत्यापन',
-    step_6: 'ट्रस्ट स्कोर',
-    step_7: 'स्कोर सुधार योजना',
-    step_8: 'मार्केटप्लेस सबमिशन',
 
     // Step 1: Basic Data
     occupation_title: 'मुख्य व्यवसाय',
@@ -230,7 +197,7 @@ export const translations: Record<Language, Record<string, string>> = {
     occ_gig_worker: 'गिग डिलीवरी राइडर / चालक',
     occ_small_farmer: 'छोटे / सीमांत किसान',
     occ_self_employed: 'स्व-नियोजित / कारीगर',
-    
+
     age_label: 'आयु (वर्ष)',
     education_label: 'शिक्षा स्तर',
     edu_none: 'कोई औपचारिक शिक्षा नहीं',
@@ -272,11 +239,9 @@ export const translations: Record<Language, Record<string, string>> = {
     doc_preset_2: 'FPO भूमि रिकॉर्ड प्रमाणपत्र (नादिया)',
     doc_preset_3: 'वेंडीग लाइसेंस अनुमति (कोलकाता)',
     doc_verifying: 'दस्तावेज़ सत्यापन चल रहा है...',
-    doc_verified: 'दस्तावेज़ सफलतापूर्वक सत्यापित',
     doc_skip: 'अभी छोड़ें और स्कोर देखें',
 
-    // Step 6: Cred0 Score
-    score_reveal_title: 'आपका Cred0 स्कोर',
+    // Score & Explanations
     score_scale_label: 'पैमाना: 300 से 900 अंक',
     zone_building: 'निर्माण (Building)',
     zone_fair: 'सामान्य (Fair)',
@@ -287,22 +252,38 @@ export const translations: Record<Language, Record<string, string>> = {
     shap_negative: 'स्कोर बढ़ाने के अवसर',
     points: 'अंक',
 
-    // Step 7: Optimization Plan
+    // Score Optimization Plan
     opt_title: 'स्कोर सुधार योजना',
     opt_subtitle: 'अपना स्कोर बढ़ाने के आसान कदम',
-    apply_sim: 'सिम्युलेट करें',
+    opt_eyebrow: 'स्कोर अनुकूलन',
+    opt_heading: 'मजबूत स्कोर के लिए आपका व्यक्तिगत मार्ग',
+    opt_subheading: 'अपना Cred0 स्कोर बढ़ाने और माइक्रो-ऋणदाताओं से कम ब्याज दरों को अनलॉक करने के लिए सत्यापन कार्यों का अनुकरण करें।',
+    active_verifications: 'सक्रिय सत्यापन एवं कार्य',
+    credit_signals_title: 'क्रेडिट सिग्नल क्षमता',
+    status_applied: 'लागू किया गया',
+    status_available: 'उपलब्ध',
+    simulate_action: 'सिम्युलेट करें',
+    profile_optimized_title: 'प्रोफ़ाइल पूरी तरह से अनुकूलित',
+    profile_optimized_desc: 'आपकी प्रोफ़ाइल में सभी मुख्य Cred0 सत्यापन मार्कर शामिल हैं। मार्केटप्लेस में सक्रिय ऋणदाताओं के साथ अपनी प्रोफ़ाइल साझा करें।',
 
-    // Step 8: Marketplace
-    market_title: 'ऋणदाताओं के साथ साझा करें',
-    market_subtitle: 'विश्वसनीय माइक्रो-फाइनेंस संस्थानों को अपना आवेदन भेजें',
-    share_cta: 'ऋणदाताओं को अनुरोध भेजें',
-    shared_success: 'अनुरोध सफलतापूर्वक भेजा गया!',
-    shared_msg: 'आपका आवेदन सभी पंजीकृत ऋणदाताओं को भेज दिया गया है।',
-    jump_lender: 'मूल्यांकन के लिए ऋणदाता दृश्य पर जाएं',
-    offers_title: 'प्राप्त ऋण प्रस्ताव (Loan Offers)',
+    // Borrower Dashboard Redesign Keys
+    dashboard_eyebrow: 'उधारकर्ता क्रेडिट डैशबोर्ड',
+    dashboard_title_welcome: 'स्वागत है,',
+    dashboard_hero_subtitle: 'आपका वास्तविक समय का वैकल्पिक क्रेडिट स्कोर, व्यक्तिगत सुधार योजना और सत्यापित ऋण प्रस्ताव।',
+    update_profile_data: 'डेटा अपडेट करें',
+    score_breakdown_eyebrow: 'व्याख्या योग्य संकेत',
+    marketplace_eyebrow: 'मार्केटप्लेस स्वीकृति',
+    marketplace_title: 'ऋण स्वीकृति और मार्केटप्लेस स्थिति',
+    broadcasting_pill: 'ऋणदाताओं को भेजा जा रहा है',
+    requested_credit_amount: 'अनुरोधित ऋण राशि',
+    ready_to_request: 'क्या आप ऋणदाताओं से ऋण अनुरोध के लिए तैयार हैं?',
+    ready_to_request_desc: 'आपने ऑनबोर्डिंग के दौरान ऋण अनुरोध छोड़ दिया था। प्रतिस्पर्धी माइक्रो-क्रेडिट ऑफर पाने के लिए आप कभी भी अपना प्रोफाइल भेज सकते हैं।',
+    send_request_btn: 'ऋणदाताओं को अनुरोध भेजें (चरण 5)',
+    market_live_desc: 'आपकी प्रोफ़ाइल और Cred0 स्कोर ऋणदाता मार्केटप्लेस में सक्रिय हैं। ऋणदाता जल्द ही समीक्षा करेंगे और ऋण प्रस्ताव जारी करेंगे।',
+    sanctioned_pill: 'स्वीकृत',
+    offer_accepted_badge: 'प्रस्ताव स्वीकार किया गया',
     no_offers: 'अभी कोई प्रस्ताव नहीं मिला है। ऋणदाता शीघ्र समीक्षा करेंगे।',
     accept_offer: 'ऋण प्रस्ताव स्वीकार करें',
-    offer_accepted: 'प्रस्ताव स्वीकार कर लिया गया! राशि जल्द ही हस्तांतरित की जाएगी।',
 
     // Lender Dashboard
     lender_dash_title: 'मार्केटप्लेस आवेदन फ़ीड',
@@ -317,18 +298,14 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Audit Panel
     audit_title: 'विस्तृत क्रेडिट ऑडिट पैनल',
-    borrower_overview: 'उधारकर्ता अवलोकन',
     risk_diagnostics: 'जोखिम विश्लेषण',
     default_prob: 'डिफ़ॉल्ट संभावना %',
     risk_cat: 'जोखिम वर्ग',
-    risk_low: 'कम जोखिम',
-    risk_mod: 'मध्यम जोखिम',
-    risk_high: 'उच्च जोखिम',
     waterfall_title: 'SHAP योगदान वॉटरफॉल चार्ट',
     waterfall_sub: '300 आधार अंक से जुड़ने वाले (+हरा) और घटने वाले (-लाल) अंक',
     base_score: 'आधार स्कोर (300)',
     final_score: 'अंतिम स्कोर',
-    
+
     underwriting_title: 'ऋण स्वीकृति नियंत्रण',
     loan_amount: 'स्वीकृत ऋण राशि',
     interest_rate: 'ब्याज दर (% वार्षिक)',
@@ -339,14 +316,11 @@ export const translations: Record<Language, Record<string, string>> = {
     modal_confirm_title: 'ऋण स्वीकृति की पुष्टि करें',
     modal_confirm_msg: 'क्या आप ऋण प्रस्ताव भेजना चाहते हैं:',
     confirm_sanction: 'पुष्टि करें और प्रस्ताव भेजें',
-    offer_sent_success: 'ऋण प्रस्ताव सफलतापूर्वक भेजा गया!',
 
     // Common
     next: 'आगे बढ़ें',
     back: 'पीछे जाएं',
     cancel: 'रद्द करें',
-    save: 'सहेजें',
-    loading: 'प्रक्रिया जारी है...',
 
     // Welcome & Role Gate
     welcome_title: 'Cred0 क्रेडिट प्लेटफॉर्म में आपका स्वागत है',
@@ -358,7 +332,6 @@ export const translations: Record<Language, Record<string, string>> = {
     role_borrower_desc: 'अपना क्रेडिट प्रोफाइल बनाएं, माइक्रो-लोन ऑफर अनलॉक करें और अपना ट्रस्ट स्कोर बढ़ाएं।',
     role_lender_cta: 'ऋणदाता लॉगिन (Lender Login)',
     role_lender_desc: 'आवेदनों की समीक्षा करें, SHAP स्कोर विश्लेषण देखें और ऋण स्वीकृत करें।',
-    auth_subtitle_lender: 'ऋणदाता मूल्यांकन पोर्टल में प्रवेश करने के लिए अपना पंजीकृत मोबाइल नंबर दर्ज करें',
     switch_lender: 'ऋणदाता संस्था बदलें',
 
     // Borrower Profile & Family Fields
@@ -391,27 +364,11 @@ export const translations: Record<Language, Record<string, string>> = {
   bn: {
     brand_name: 'Cred0',
     tagline: 'অনানুষ্ঠানিক অর্থনীতির জন্য বিকল্প ক্রেডিট স্কোরিং',
-    tagline_hi: 'ভরসা — প্রতি ক্ষুদ্র-ঋণে বিশ্বাস',
-    tagline_bn: 'ভরসা — প্রতি ক্ষুদ্র-ঋণে বিশ্বাস',
-    
+
     // Roles & Navigation
     role_borrower: 'ঋণগ্রহীতা ভিউ (Borrower)',
     role_lender: 'ঋণদাতা নিরীক্ষা ভিউ (Lender)',
     switch_profile: 'ডেমো ঋণগ্রহীতা পরিবর্তন',
-    scoring_mode: 'স্কোরিং ইঞ্জিন',
-    mode_mock: 'রুল-ভিত্তিক মক ইঞ্জিন',
-    mode_local: 'লোকাল মডেল এপিআই',
-    mode_gemini: 'জেমিনি হাইব্রিড এআই ইঞ্জিন',
-
-    // Borrower Steps
-    step_1: 'মৌলিক তথ্য',
-    step_2: 'পরিবারের প্রোফাইল',
-    step_3: 'সম্পদ বিবরণী',
-    step_4: 'সামাজিক সম্পর্ক',
-    step_5: 'নথিপত্র যাচাই',
-    step_6: 'ট্রাস্ট স্কোর',
-    step_7: 'স্কোর উন্নতির পরিকল্পনা',
-    step_8: 'মার্কেটপ্লেস জমাদান',
 
     // Step 1: Basic Data
     occupation_title: 'প্রধান পেশা',
@@ -420,7 +377,7 @@ export const translations: Record<Language, Record<string, string>> = {
     occ_gig_worker: 'গিগ ডেলিভারি রাইডার / চালক',
     occ_small_farmer: 'ক্ষুদ্র / প্রান্তিক কৃষক',
     occ_self_employed: 'স্বনির্ভর / কারিগর',
-    
+
     age_label: 'বয়স (বছর)',
     education_label: 'শিক্ষাগত যোগ্যতা',
     edu_none: 'আনুষ্ঠানিক শিক্ষা নেই',
@@ -462,11 +419,9 @@ export const translations: Record<Language, Record<string, string>> = {
     doc_preset_2: 'FPO জমির রেকর্ড সার্টিফিকেট (নদীয়া)',
     doc_preset_3: 'ট্রেড লাইসেন্স পারমিট (কলকাতা)',
     doc_verifying: 'নথিপত্র যাচাইকরণ চলছে...',
-    doc_verified: 'নথিপত্র সফলভাবে যাচাই করা হয়েছে',
     doc_skip: 'এখনই এড়িয়ে যান এবং স্কোর দেখুন',
 
-    // Step 6: Cred0 Score
-    score_reveal_title: 'আপনার Cred0 স্কোর',
+    // Score & Explanations
     score_scale_label: 'স্কেল: ৩০০ থেকে ৯০০ পয়েন্ট',
     zone_building: 'গঠনমূলক (Building)',
     zone_fair: 'মোটামুটি (Fair)',
@@ -477,22 +432,38 @@ export const translations: Record<Language, Record<string, string>> = {
     shap_negative: 'স্কোর বাড়ানোর সুযোগসমূহ',
     points: 'পয়েন্ট',
 
-    // Step 7: Optimization Plan
+    // Score Optimization Plan
     opt_title: 'স্কোর উন্নতির পরিকল্পনা',
     opt_subtitle: 'আপনার ক্রেডিট যোগ্যতা বাড়ানোর সহজ পদক্ষেপ',
-    apply_sim: 'সিমুলেট করুন',
+    opt_eyebrow: 'স্কোর অপ্টিমাইজেশন',
+    opt_heading: 'একটি শক্তিশালী স্কোরের জন্য আপনার ব্যক্তিগত পথ',
+    opt_subheading: 'আপনার Cred0 স্কোর বাড়াতে এবং মাইক্রো-ঋণদাতাদের কাছ থেকে কম সুদের হার আনলক করতে যাচাইকরণ পদক্ষেপগুলি সিমুলেট করুন।',
+    active_verifications: 'সক্রিয় যাচাইকরণ ও পদক্ষেপ',
+    credit_signals_title: 'ক্রেডিট সিগন্যাল শক্তি',
+    status_applied: 'প্রয়োগ করা হয়েছে',
+    status_available: 'উপলব্ধ',
+    simulate_action: 'সিমুলেট করুন',
+    profile_optimized_title: 'প্রোফাইল সম্পূর্ণরূপে অপ্টিমাইজ করা হয়েছে',
+    profile_optimized_desc: 'আপনার প্রোফাইলে সমস্ত মূল Cred0 যাচাইকরণ মার্কার রয়েছে। মার্কেটপ্লেসে সক্রিয় ঋণদাতাদের সাথে আপনার প্রোফাইল শেয়ার করুন।',
 
-    // Step 8: Marketplace
-    market_title: 'ঋণদাতাদের সাথে শেয়ার করুন',
-    market_subtitle: 'বিশ্বস্ত ক্ষুদ্র-অর্থায়ন সংস্থাগুলির কাছে আপনার আবেদন পাঠান',
-    share_cta: 'ঋণদাতাদের কাছে অনুরোধ পাঠান',
-    shared_success: 'অনুরোধ সফলভাবে পাঠানো হয়েছে!',
-    shared_msg: 'আপনার আবেদনটি নিবন্ধিত সকল ঋণদাতাদের কাছে পাঠানো হয়েছে।',
-    jump_lender: 'মূল্যায়নের জন্য ঋণদাতা ভিউতে যান',
-    offers_title: 'প্রাপ্ত ঋণের প্রস্তাবসমূহ (Loan Offers)',
+    // Borrower Dashboard Redesign Keys
+    dashboard_eyebrow: 'ঋণগ্রহীতা ক্রেডিট ড্যাশবোর্ড',
+    dashboard_title_welcome: 'স্বাগতম,',
+    dashboard_hero_subtitle: 'আপনার রিয়েল-টাইম বিকল্প ক্রেডিট স্কোর, ব্যক্তিগত উন্নতির পরিকল্পনা এবং যাচাইকৃত ঋণ প্রস্তাব।',
+    update_profile_data: 'ডেটা আপডেট করুন',
+    score_breakdown_eyebrow: 'ব্যাখ্যামূলক সংকেত',
+    marketplace_eyebrow: 'মার্কেটপ্লেস অনুমোদন',
+    marketplace_title: 'ঋণ অনুমোদন ও মার্কেটপ্লেস স্ট্যাটাস',
+    broadcasting_pill: 'ঋণদাতাদের কাছে সম্প্রচারিত',
+    requested_credit_amount: 'অনুরোধকৃত ঋণের পরিমাণ',
+    ready_to_request: 'আপনি কি ঋণদাতাদের কাছ থেকে ঋণের অনুরোধ করতে প্রস্তুত?',
+    ready_to_request_desc: 'আপনি অনবোর্ডিংয়ের সময় ঋণের অনুরোধ বাদ দিয়েছিলেন। প্রতিযোগিতামূলক অফার পেতে আপনি যে কোনো সময় আপনার প্রোফাইল সম্প্রচার করতে পারেন।',
+    send_request_btn: 'ঋণদাতাদের কাছে অনুরোধ পাঠান (ধাপ ৫)',
+    market_live_desc: 'আপনার প্রোফাইল এবং Cred0 স্কোর ঋণদাতা মার্কেটপ্লেসে লাইভ রয়েছে। ঋণদাতারা শীঘ্রই পর্যালোচনা করবেন এবং ঋণের প্রস্তাব পাঠাবেন।',
+    sanctioned_pill: 'অনুমোদিত',
+    offer_accepted_badge: 'প্রস্তাব গৃহীত হয়েছে',
     no_offers: 'এখনও কোনো প্রস্তাব পাওয়া যায়নি। ঋণদাতারা শীঘ্রই পর্যালোচনা করবেন।',
     accept_offer: 'ঋণের প্রস্তাব গ্রহণ করুন',
-    offer_accepted: 'প্রস্তাব গৃহীত হয়েছে! শীঘ্রই অর্থ প্রদান করা হবে।',
 
     // Lender Dashboard
     lender_dash_title: 'মার্কেটপ্লেস আবেদন ফিড',
@@ -507,18 +478,14 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Audit Panel
     audit_title: 'বিস্তারিত ক্রেডিট অডিট প্যানেল',
-    borrower_overview: 'ঋণগ্রহীতার সংক্ষিপ্ত তথ্য',
     risk_diagnostics: 'ঝুঁকি বিশ্লেষণ',
     default_prob: 'খেলাপি হওয়ার সম্ভাবনা %',
     risk_cat: 'ঝুঁকির বিভাগ',
-    risk_low: 'কম ঝুঁকি',
-    risk_mod: 'মাঝারি ঝুঁকি',
-    risk_high: 'উচ্চ ঝুঁকি',
     waterfall_title: 'SHAP অবদানের ওয়াটারফল চার্ট',
     waterfall_sub: '৩০০ ভিত্তি পয়েন্ট থেকে যোগ হওয়া (+সবুজ) এবং বিয়োগ হওয়া (-লাল) পয়েন্ট',
     base_score: 'ভিত্তি স্কোর (৩০০)',
     final_score: 'চূড়ান্ত স্কোর',
-    
+
     underwriting_title: 'ঋণ অনুমোদন নিয়ন্ত্রণ',
     loan_amount: 'অনুমোদিত ঋণের পরিমাণ',
     interest_rate: 'সুদের হার (% বার্ষিক)',
@@ -529,14 +496,11 @@ export const translations: Record<Language, Record<string, string>> = {
     modal_confirm_title: 'ঋণ অনুমোদনের নিশ্চিতকরণ',
     modal_confirm_msg: 'আপনি কি ঋণের প্রস্তাব পাঠাতে নিশ্চিত:',
     confirm_sanction: 'নিশ্চিত করুন ও প্রস্তাব পাঠান',
-    offer_sent_success: 'ঋণের প্রস্তাব সফলভাবে পাঠানো হয়েছে!',
 
     // Common
     next: 'এগিয়ে যান',
     back: 'ফিরে যান',
     cancel: 'বাতিল করুন',
-    save: 'সংরক্ষণ করুন',
-    loading: 'প্রক্রিয়াকরণ চলছে...',
 
     // Welcome & Role Gate
     welcome_title: 'Cred0 ক্রেডিট প্ল্যাটফর্মে স্বাগতম',
@@ -548,7 +512,6 @@ export const translations: Record<Language, Record<string, string>> = {
     role_borrower_desc: 'আপনার বিকল্প ক্রেডিট প্রোফাইল তৈরি করুন, মাইক্রো-লোন অফার আনলক করুন এবং স্কোর বাড়ান।',
     role_lender_cta: 'ঋণদাতা লগইন (Lender Login)',
     role_lender_desc: 'আবেদন পর্যালোচনা করুন, SHAP স্কোর বিশ্লেষণ দেখুন এবং ঋণ অনুমোদন করুন।',
-    auth_subtitle_lender: 'ঋণদাতা নিরীক্ষা পোর্টালে প্রবেশ করতে আপনার নিবন্ধিত নম্বর লিখুন',
     switch_lender: 'ঋণদাতা সংস্থা পরিবর্তন করুন',
 
     // Borrower Profile & Family Fields
